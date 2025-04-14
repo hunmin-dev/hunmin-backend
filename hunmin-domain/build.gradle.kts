@@ -9,4 +9,6 @@ tasks.withType<Jar> {
 }
 
 dependencies {
+    implementation(project(":hunmin-common"))
+    testImplementation(testFixtures(project(":hunmin-common")))
 }

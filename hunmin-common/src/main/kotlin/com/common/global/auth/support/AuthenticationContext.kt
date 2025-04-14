@@ -1,6 +1,6 @@
 package com.common.global.auth.support
 
-import com.common.global.exceptions.AuthExceptionType
+import com.common.global.auth.exception.AuthExceptionType
 import com.common.global.exceptions.base.CustomException
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope

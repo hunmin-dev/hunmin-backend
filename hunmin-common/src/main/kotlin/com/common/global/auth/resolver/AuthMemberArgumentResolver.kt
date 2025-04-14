@@ -1,8 +1,8 @@
 package com.common.global.auth.resolver
 
 import com.common.global.auth.annotation.AuthMember
+import com.common.global.auth.exception.AuthExceptionType
 import com.common.global.auth.support.AuthenticationContext
-import com.common.global.exceptions.AuthExceptionType
 import com.common.global.exceptions.base.CustomException
 import org.springframework.core.MethodParameter
 import org.springframework.lang.Nullable

@@ -1,4 +1,4 @@
-package com.common.global.exceptions
+package com.domain.auth.exception
 
 import com.common.global.exceptions.base.CustomExceptionType
 import org.springframework.http.HttpStatus
