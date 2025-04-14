@@ -1,4 +1,4 @@
-package com.common.global.auth.token
+package com.common.global.auth.interceptor
 
 interface TokenProvider {
 

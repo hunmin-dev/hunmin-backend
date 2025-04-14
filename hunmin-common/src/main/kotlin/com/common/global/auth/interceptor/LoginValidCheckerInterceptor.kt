@@ -3,7 +3,6 @@ package com.common.global.auth.interceptor
 import com.common.global.auth.exception.TokenExceptionType
 import com.common.global.auth.support.AuthenticationContext
 import com.common.global.auth.support.AuthenticationExtractor
-import com.common.global.auth.token.TokenProvider
 import com.common.global.exceptions.base.CustomException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

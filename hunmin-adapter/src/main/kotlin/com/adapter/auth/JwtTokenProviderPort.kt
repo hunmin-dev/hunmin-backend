@@ -1,5 +1,6 @@
-package com.common.global.auth.token
+package com.adapter.auth
 
+import com.application.auth.port.out.TokenProviderPort
 import com.common.global.auth.exception.TokenExceptionType
 import com.common.global.exceptions.base.CustomException
 import io.jsonwebtoken.ExpiredJwtException
@@ -17,13 +18,13 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Component
-class JwtTokenProvider(
+class JwtTokenProviderPort(
     @Value("\${jwt.secret}")
     private val secret: String,
 
     @Value("\${jwt.expiration-period}")
     private val expirationPeriod: Long,
-) : TokenProvider {
+) : TokenProviderPort {
 
     private val secretKey: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
 

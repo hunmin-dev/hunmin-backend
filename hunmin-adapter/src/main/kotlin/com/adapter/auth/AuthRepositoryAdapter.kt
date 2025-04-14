@@ -1,9 +1,9 @@
-package com.api.auth.out.auth
+package com.adapter.auth
 
+import com.application.auth.port.out.AuthRepositoryPort
 import com.domain.auth.Auth
 import com.persistence.auth.AuthJpaRepository
 import com.persistence.auth.AuthPersistenceMapper
-import com.application.auth.port.out.AuthRepositoryPort
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 

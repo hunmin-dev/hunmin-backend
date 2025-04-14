@@ -1,4 +1,4 @@
-package com.common.global.auth
+package com.adapter.auth
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -1,4 +1,4 @@
-package com.store.auth.application.port.out
+package com.application.auth.port.out
 
 interface TokenProviderPort {
 

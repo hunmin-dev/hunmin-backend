@@ -1,4 +1,4 @@
-package com.api.auth.out.service
+package com.adapter.auth
 
 import com.domain.auth.service.AuthPasswordEncryptor
 import org.springframework.security.crypto.password.PasswordEncoder
