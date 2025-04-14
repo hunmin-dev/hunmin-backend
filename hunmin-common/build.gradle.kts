@@ -18,11 +18,4 @@ dependencies {
     api("io.jsonwebtoken:jjwt-api:0.12.6")
     api("io.jsonwebtoken:jjwt-impl:0.12.6")
     api("io.jsonwebtoken:jjwt-jackson:0.12.6")
-
-    // security-crypto
-    api("org.springframework.security:spring-security-crypto")
-
-    // webflux
-    api("org.springframework.boot:spring-boot-starter-webflux:3.3.3")
-    api("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
 }

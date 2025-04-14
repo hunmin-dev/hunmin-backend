@@ -9,6 +9,11 @@ tasks.withType<Jar> {
 }
 
 dependencies {
+    implementation(project(":hunmin-common"))
+    implementation(project(":hunmin-domain"))
+    testImplementation(testFixtures(project(":hunmin-common")))
+    testImplementation(testFixtures(project(":hunmin-domain")))
+
     // db
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
