@@ -18,7 +18,7 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Component
-class JwtTokenProviderPort(
+class JwtTokenProviderAdapter(
     @Value("\${jwt.secret}")
     private val secret: String,
 

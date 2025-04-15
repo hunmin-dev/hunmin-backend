@@ -1,5 +1,11 @@
-plugins {
-    kotlin("jvm")
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+tasks.withType<BootJar> {
+    enabled = false
+}
+
+tasks.withType<Jar> {
+    enabled = true
 }
 
 group = "com"
@@ -14,7 +20,6 @@ dependencies {
     implementation(project(":hunmin-domain"))
     testImplementation(testFixtures(project(":hunmin-common")))
     testImplementation(testFixtures(project(":hunmin-domain")))
-
 }
 
 tasks.test {
