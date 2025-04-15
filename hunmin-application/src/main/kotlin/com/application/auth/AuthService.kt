@@ -9,13 +9,13 @@ import com.common.global.exceptions.base.CustomException
 import com.common.util.throwWhen
 import com.domain.auth.Auth
 import com.domain.auth.exception.AuthExceptionType
-import com.domain.auth.service.AuthPasswordEncryptor
+import com.domain.auth.service.AuthPasswordEncryptorPort
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
     private val authRepositoryPort: AuthRepositoryPort,
-    private val authPasswordEncryptor: AuthPasswordEncryptor,
+    private val authPasswordEncryptorPort: AuthPasswordEncryptorPort,
     private val tokenProviderPort: TokenProviderPort
 ) : AuthUseCase {
 
@@ -28,7 +28,7 @@ class AuthService(
             Auth.signUpWithEncryption(
                 username = command.username,
                 password = command.password,
-                authPasswordEncryptor = authPasswordEncryptor
+                authPasswordEncryptorPort = authPasswordEncryptorPort
             )
         )
 
@@ -39,7 +39,7 @@ class AuthService(
         val auth = authRepositoryPort.findByUsername(command.username)
             ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
 
-        require(auth.matches(command.password, authPasswordEncryptor)) {
+        require(auth.matches(command.password, authPasswordEncryptorPort)) {
             AuthExceptionType.PASSWORD_INVALID_EXCEPTION
         }
 

@@ -22,8 +22,8 @@ class AuthRepositoryAdapter(
     }
 
     override fun findByUsername(username: String): Auth? {
-        val authEntity = authJpaRepository.findByUsername(username)
-        return authEntity?.let { authPersistenceMapper.toDomain(it) }
+        return authJpaRepository.findByUsername(username)
+            ?.let { authPersistenceMapper.toDomain(it) }
     }
 
     override fun existsByUsername(username: String): Boolean {

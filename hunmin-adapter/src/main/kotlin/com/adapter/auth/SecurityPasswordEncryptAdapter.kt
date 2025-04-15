@@ -1,13 +1,13 @@
 package com.adapter.auth
 
-import com.domain.auth.service.AuthPasswordEncryptor
+import com.domain.auth.service.AuthPasswordEncryptorPort
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
-class SecurityAuthPasswordEncryptor(
+class SecurityPasswordEncryptAdapter(
     private val passwordEncoder: PasswordEncoder
-) : AuthPasswordEncryptor {
+) : AuthPasswordEncryptorPort {
 
     override fun encrypt(password: String): String {
         return passwordEncoder.encode(password)

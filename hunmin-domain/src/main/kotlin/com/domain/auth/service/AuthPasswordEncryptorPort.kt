@@ -1,6 +1,6 @@
 package com.domain.auth.service
 
-interface AuthPasswordEncryptor {
+interface AuthPasswordEncryptorPort {
 
     fun encrypt(password: String): String
 
