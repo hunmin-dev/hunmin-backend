@@ -5,11 +5,13 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ComponentScan(
-    "com.common",
-    "com.domain",
-    "com.application",
-    "com.persistence",
-    "com.adapter"
+    basePackages = [
+        "com.common",
+        "com.domain",
+        "com.application",
+        "com.persistence",
+        "com.adapter"
+    ]
 )
 class ModuleConfig {
 }
