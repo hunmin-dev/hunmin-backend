@@ -14,7 +14,6 @@ dependencies {
     implementation(project(":hunmin-domain"))
     testImplementation(testFixtures(project(":hunmin-common")))
     testImplementation(testFixtures(project(":hunmin-domain")))
-
 }
 
 tasks.test {
