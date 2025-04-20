@@ -15,9 +15,6 @@ import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
 
-/**
- * 통합테스트 테스트 격리용 어노테이션
- */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,9 +27,6 @@ import java.lang.annotation.Target
 )
 annotation class IntegrationTest
 
-/**
- * IntegrationTest 어노테이션에서 데이터베이스 초기화를 처리하는 리스너
- */
 class DatabaseCleanupListener : AbstractTestExecutionListener() {
 
     override fun beforeTestExecution(testContext: TestContext) {
@@ -40,20 +34,28 @@ class DatabaseCleanupListener : AbstractTestExecutionListener() {
         val transactionManager = applicationContext.getBean(PlatformTransactionManager::class.java)
         val entityManager = applicationContext.getBean(EntityManager::class.java)
 
-        val restAssuredPortForTest = applicationContext.environment.getProperty("local.server.port")
-            ?.toInt()
-            ?: 0
+        applyRestAssuredPort(applicationContext.environment.getProperty("local.server.port"))
+        cleanupDatabase(entityManager, transactionManager)
+    }
 
-        RestAssured.port = restAssuredPortForTest
+    private fun applyRestAssuredPort(port: String?) {
+        RestAssured.port = requireNotNull(port?.toIntOrNull()) {
+            "RestAssured port 설정 불가: 'local.server.port'를 사용할 수 없습니다.."
+        }
+    }
 
+    private fun cleanupDatabase(
+        entityManager: EntityManager,
+        transactionManager: PlatformTransactionManager
+    ) {
         TransactionTemplate(transactionManager).executeWithoutResult {
-            val tables = entityManager.createNativeQuery(
+            val tableNames = entityManager.createNativeQuery(
                 "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'"
-            ).resultList
+            ).resultList.filterIsInstance<String>()
 
             entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate()
-            tables.forEach { tableName ->
-                entityManager.createNativeQuery("TRUNCATE TABLE $tableName").executeUpdate()
+            tableNames.forEach { table ->
+                entityManager.createNativeQuery("TRUNCATE TABLE \"$table\"").executeUpdate()
             }
             entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate()
         }
