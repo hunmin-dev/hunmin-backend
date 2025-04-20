@@ -1,32 +1,27 @@
 package com.application.auth
 
+import com.domain.auth.Auth
 import com.domain.auth.port.`in`.command.SignInCommand
 import com.domain.auth.port.`in`.command.SignUpCommand
-import com.domain.auth.Auth
 
 class AuthCommandFixture {
-
     companion object {
-        fun 인증_생성(): Auth {
-            return Auth(
+        fun 인증_생성(): Auth =
+            Auth(
                 username = "username",
-                password = "password"
+                password = "password",
             )
-        }
 
-        fun 인증_생성_커맨드(): SignUpCommand {
-            return SignUpCommand(
+        fun 인증_생성_커맨드(): SignUpCommand =
+            SignUpCommand(
                 username = "username",
-                password = "password"
+                password = "password",
             )
-        }
 
-        fun 인증_로그인_커맨드(): SignInCommand {
-            return SignInCommand(
+        fun 인증_로그인_커맨드(): SignInCommand =
+            SignInCommand(
                 username = "username",
-                password = "password"
+                password = "password",
             )
-        }
     }
 }
-

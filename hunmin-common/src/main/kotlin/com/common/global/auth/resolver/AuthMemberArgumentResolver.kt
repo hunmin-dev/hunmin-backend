@@ -14,24 +14,22 @@ import org.springframework.web.method.support.ModelAndViewContainer
 
 @Component
 class AuthMemberArgumentResolver(
-    private val authenticationContext: AuthenticationContext
+    private val authenticationContext: AuthenticationContext,
 ) : HandlerMethodArgumentResolver {
-
-    override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.hasParameterAnnotation(AuthMember::class.java) &&
-                parameter.parameterType == Long::class.java
-    }
+    override fun supportsParameter(parameter: MethodParameter): Boolean =
+        parameter.hasParameterAnnotation(AuthMember::class.java) &&
+            parameter.parameterType == Long::class.java
 
     override fun resolveArgument(
         parameter: MethodParameter,
         @Nullable mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
-        @Nullable binderFactory: WebDataBinderFactory?
-    ): Any? {
-        return authenticationContext.getPrincipal()
+        @Nullable binderFactory: WebDataBinderFactory?,
+    ): Any? =
+        authenticationContext
+            .getPrincipal()
             .takeIf { it != ANONYMOUS_AUTH_ID }
             ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
-    }
 
     companion object {
         private const val ANONYMOUS_AUTH_ID: Long = -1L

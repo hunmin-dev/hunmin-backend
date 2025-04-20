@@ -11,16 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @Tag(name = "Auth API")
 interface AuthApi {
-
     @Operation(summary = "회원가입")
     @PostMapping("/sign-up")
     fun signUp(
-        @RequestBody request: SignUpRequest
+        @RequestBody request: SignUpRequest,
     ): ResponseEntity<AuthResponse>
 
     @Operation(summary = "로그인")
     @PostMapping("/sign-in")
     fun signIn(
-        @RequestBody request: SignInRequest
+        @RequestBody request: SignInRequest,
     ): ResponseEntity<AuthResponse>
 }

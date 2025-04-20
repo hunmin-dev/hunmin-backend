@@ -5,11 +5,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class HealthController {
-
     @GetMapping("/health")
-    fun health(): String {
-        return "up"
-    }
+    fun health(): String = "up"
 
     @GetMapping("/exception")
     fun exception() = IllegalArgumentException("예외 발생!")

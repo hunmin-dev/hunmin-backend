@@ -14,81 +14,83 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionAdvice {
-
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @ExceptionHandler(Exception::class)
     fun handleUnexpectedException(
         request: HttpServletRequest,
-        exception: Exception
+        exception: Exception,
     ): ResponseEntity<ExceptionResponse> {
         log.error(
             "Unexpected error occurred. URI: {} {}, message: {}",
             request.method,
             request.requestURI,
             exception.message,
-            exception
+            exception,
         )
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
                 ExceptionResponse(
                     name = "INTERNAL_SERVER_ERROR",
                     customCode = HttpStatus.INTERNAL_SERVER_ERROR,
-                    message = exception.message ?: "An unexpected error occurred."
-                )
+                    message = exception.message ?: "An unexpected error occurred.",
+                ),
             )
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationException(
         request: HttpServletRequest,
-        exception: MethodArgumentNotValidException
+        exception: MethodArgumentNotValidException,
     ): ResponseEntity<ExceptionResponse> {
         log.warn(
             "Invalid request parameters. URI: {} {}",
             request.method,
-            request.requestURI
+            request.requestURI,
         )
 
-        val errorMessage = exception.bindingResult.fieldErrors
-            .joinToString("; ") { "${it.field}: ${it.defaultMessage ?: "Invalid value"}" }
+        val errorMessage =
+            exception.bindingResult.fieldErrors
+                .joinToString("; ") { "${it.field}: ${it.defaultMessage ?: "Invalid value"}" }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
             .body(
                 ExceptionResponse(
                     name = "VALIDATION_ERROR",
                     customCode = HttpStatus.BAD_REQUEST,
-                    message = errorMessage.takeIf { it.isNotBlank() } ?: "Invalid request parameters"
-                )
+                    message = errorMessage.takeIf { it.isNotBlank() } ?: "Invalid request parameters",
+                ),
             )
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleDeserializationException(
-        exception: HttpMessageNotReadableException
-    ): ResponseEntity<ExceptionResponse> {
-        val message = when (val cause = exception.cause) {
-            is MissingKotlinParameterException -> "Field '${cause.parameter.name}' cannot be null."
-            else -> "Failed to deserialize request body."
-        }
+    fun handleDeserializationException(exception: HttpMessageNotReadableException): ResponseEntity<ExceptionResponse> {
+        val message =
+            when (val cause = exception.cause) {
+                is MissingKotlinParameterException -> "Field '${cause.parameter.name}' cannot be null."
+                else -> "Failed to deserialize request body."
+            }
 
         log.warn("Deserialization error: {}", message, exception)
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
             .body(
                 ExceptionResponse(
                     name = "DESERIALIZATION_ERROR",
                     customCode = HttpStatus.BAD_REQUEST,
-                    message = message
-                )
+                    message = message,
+                ),
             )
     }
 
     @ExceptionHandler(CustomException::class)
     fun handleCustomException(
         request: HttpServletRequest,
-        exception: CustomException
+        exception: CustomException,
     ): ResponseEntity<ExceptionResponse> {
         val type = exception.getExceptionType()
 
@@ -98,16 +100,17 @@ class GlobalExceptionAdvice {
             request.requestURI,
             type.subject,
             type.message,
-            exception
+            exception,
         )
 
-        return ResponseEntity.status(type.httpStatusCode)
+        return ResponseEntity
+            .status(type.httpStatusCode)
             .body(
                 ExceptionResponse(
                     name = type.subject,
                     customCode = type.httpStatusCode,
-                    message = type.message
-                )
+                    message = type.message,
+                ),
             )
     }
 }

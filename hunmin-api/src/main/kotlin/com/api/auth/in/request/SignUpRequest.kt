@@ -9,16 +9,15 @@ data class SignUpRequest(
         example = "root",
     )
     val username: String,
-
     @Schema(
         description = "회원가입 패스워드",
         example = "root",
     )
-    val password: String
+    val password: String,
 ) {
-
-    fun toCommand() = SignUpCommand(
-        username = username,
-        password = password
-    )
+    fun toCommand() =
+        SignUpCommand(
+            username = username,
+            password = password,
+        )
 }

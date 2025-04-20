@@ -10,10 +10,10 @@ enum class HttpMethod {
     HEAD,
     TRACE,
     CONNECT,
-    ANY;
+    ANY,
+    ;
 
-    fun matches(pathMethod: String): Boolean {
-        return this == ANY ||
-                this.name.equals(pathMethod, ignoreCase = true)
-    }
+    fun matches(pathMethod: String): Boolean =
+        this == ANY ||
+            this.name.equals(pathMethod, ignoreCase = true)
 }

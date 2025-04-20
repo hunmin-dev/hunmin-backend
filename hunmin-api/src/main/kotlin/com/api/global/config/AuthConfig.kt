@@ -14,23 +14,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class AuthConfig(
     private val parseMemberIdFromTokenInterceptor: ParseMemberIdFromTokenInterceptor,
-    private val loginValidCheckerInterceptor: LoginValidCheckerInterceptor
+    private val loginValidCheckerInterceptor: LoginValidCheckerInterceptor,
 ) : WebMvcConfigurer {
-
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(parseMemberIdFromTokenInterceptor())
         registry.addInterceptor(loginValidCheckerInterceptor())
     }
 
-    private fun parseMemberIdFromTokenInterceptor(): HandlerInterceptor {
-        return PathMatcherInterceptor(parseMemberIdFromTokenInterceptor)
+    private fun parseMemberIdFromTokenInterceptor(): HandlerInterceptor =
+        PathMatcherInterceptor(parseMemberIdFromTokenInterceptor)
             .excludePathPattern("/**", OPTIONS)
-    }
 
-    private fun loginValidCheckerInterceptor(): HandlerInterceptor {
-        return PathMatcherInterceptor(loginValidCheckerInterceptor)
+    private fun loginValidCheckerInterceptor(): HandlerInterceptor =
+        PathMatcherInterceptor(loginValidCheckerInterceptor)
             .excludePathPattern("/**", OPTIONS)
             .excludePathPattern("/auth", POST, GET)
             .addPathPatterns("/auth/test", GET)
-    }
 }

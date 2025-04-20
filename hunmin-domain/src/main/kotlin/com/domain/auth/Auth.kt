@@ -7,16 +7,16 @@ class Auth(
     val username: String,
     val password: String,
 ) {
-
-    fun matches(password: String, authPasswordEncryptorPort: AuthPasswordEncryptorPort): Boolean {
-        return authPasswordEncryptorPort.matches(password, this.password)
-    }
+    fun matches(
+        password: String,
+        authPasswordEncryptorPort: AuthPasswordEncryptorPort,
+    ): Boolean = authPasswordEncryptorPort.matches(password, this.password)
 
     companion object {
         fun signUpWithEncryption(
             username: String,
             password: String,
-            authPasswordEncryptorPort: AuthPasswordEncryptorPort
+            authPasswordEncryptorPort: AuthPasswordEncryptorPort,
         ) = Auth(username = username, password = authPasswordEncryptorPort.encrypt(password))
     }
 }
