@@ -1,6 +1,6 @@
 package com.adapter.auth
 
-import com.application.auth.port.out.AuthRepositoryPort
+import com.domain.auth.port.out.AuthRepositoryPort
 import com.domain.auth.Auth
 import com.persistence.auth.AuthJpaRepository
 import com.persistence.auth.AuthPersistenceMapper

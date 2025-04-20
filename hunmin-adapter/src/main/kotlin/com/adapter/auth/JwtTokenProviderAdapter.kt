@@ -1,6 +1,6 @@
 package com.adapter.auth
 
-import com.application.auth.port.out.TokenProviderPort
+import com.domain.auth.port.out.TokenProviderPort
 import com.common.global.auth.exception.TokenExceptionType
 import com.common.global.exceptions.base.CustomException
 import io.jsonwebtoken.ExpiredJwtException

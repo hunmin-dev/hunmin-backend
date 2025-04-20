@@ -1,4 +1,4 @@
-package com.application.auth.port.out
+package com.domain.auth.port.out
 
 import com.domain.auth.Auth
 

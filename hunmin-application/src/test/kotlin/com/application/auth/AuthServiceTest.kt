@@ -3,13 +3,13 @@ package com.application.auth
 import com.application.auth.AuthCommandFixture.Companion.인증_로그인_커맨드
 import com.application.auth.AuthCommandFixture.Companion.인증_생성
 import com.application.auth.AuthCommandFixture.Companion.인증_생성_커맨드
-import com.application.auth.port.out.AuthRepositoryPort
-import com.application.auth.port.out.TokenProviderPort
+import com.domain.auth.port.out.AuthRepositoryPort
+import com.domain.auth.port.out.TokenProviderPort
 import com.common.global.exceptions.base.CustomException
 import com.domain.auth.exception.AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION
 import com.domain.auth.exception.AuthExceptionType.PASSWORD_INVALID_EXCEPTION
 import com.domain.auth.exception.AuthExceptionType.USERNAME_ALREADY_EXISTS_EXCEPTION
-import com.domain.auth.service.AuthPasswordEncryptorPort
+import com.domain.auth.port.out.AuthPasswordEncryptorPort
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

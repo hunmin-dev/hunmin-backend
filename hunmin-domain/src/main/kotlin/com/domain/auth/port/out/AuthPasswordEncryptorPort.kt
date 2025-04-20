@@ -1,4 +1,4 @@
-package com.domain.auth.service
+package com.domain.auth.port.out
 
 interface AuthPasswordEncryptorPort {
 
