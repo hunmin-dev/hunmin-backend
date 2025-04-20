@@ -1,6 +1,4 @@
-package com.domain.auth.service
-
-import com.domain.auth.port.out.AuthPasswordEncryptorPort
+package com.domain.auth.port.out
 
 class StubAuthPasswordEncryptorAdaptor : AuthPasswordEncryptorPort {
 
