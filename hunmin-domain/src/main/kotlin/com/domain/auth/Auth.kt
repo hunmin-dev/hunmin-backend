@@ -1,6 +1,6 @@
 package com.domain.auth
 
-import com.domain.auth.service.AuthPasswordEncryptorPort
+import com.domain.auth.port.out.AuthPasswordEncryptorPort
 
 class Auth(
     val id: Long = 0,

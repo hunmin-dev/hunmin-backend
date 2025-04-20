@@ -1,6 +1,6 @@
 package com.adapter.auth
 
-import com.domain.auth.service.AuthPasswordEncryptorPort
+import com.domain.auth.port.out.AuthPasswordEncryptorPort
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 

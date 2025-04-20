@@ -3,9 +3,9 @@ package com.api.auth.`in`
 import com.api.auth.`in`.request.SignInRequest
 import com.api.auth.`in`.request.SignUpRequest
 import com.api.helper.IntegrationTest
-import com.application.auth.port.out.AuthRepositoryPort
+import com.domain.auth.port.out.AuthRepositoryPort
 import com.domain.auth.Auth
-import com.domain.auth.service.AuthPasswordEncryptorPort
+import com.domain.auth.port.out.AuthPasswordEncryptorPort
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.junit.jupiter.api.Test
