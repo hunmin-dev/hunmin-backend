@@ -1,6 +1,6 @@
 package com.domain.auth
 
-import com.domain.auth.service.StubAuthPasswordEncryptorAdaptor
+import com.domain.auth.port.out.StubAuthPasswordEncryptorAdaptor
 import io.kotest.assertions.assertSoftly
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
