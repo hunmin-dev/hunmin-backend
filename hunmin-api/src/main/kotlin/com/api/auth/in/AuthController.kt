@@ -3,7 +3,7 @@ package com.api.auth.`in`
 import com.api.auth.`in`.request.SignInRequest
 import com.api.auth.`in`.request.SignUpRequest
 import com.api.auth.`in`.response.AuthResponse
-import com.application.auth.AuthUseCase
+import com.application.auth.port.`in`.AuthUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

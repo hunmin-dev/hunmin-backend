@@ -1,6 +1,6 @@
 package com.api.auth.`in`.request
 
-import com.domain.auth.port.`in`.command.SignInCommand
+import com.application.auth.port.`in`.command.SignInCommand
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class SignInRequest(
