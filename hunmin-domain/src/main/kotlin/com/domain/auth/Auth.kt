@@ -1,6 +1,6 @@
 package com.domain.auth
 
-import com.domain.auth.port.out.AuthPasswordEncryptorPort
+import com.domain.auth.port.out.AuthPasswordEncryptor
 
 class Auth(
     val id: Long = 0,
@@ -9,14 +9,14 @@ class Auth(
 ) {
     fun matches(
         password: String,
-        authPasswordEncryptorPort: AuthPasswordEncryptorPort,
-    ): Boolean = authPasswordEncryptorPort.matches(password, this.password)
+        authPasswordEncryptor: AuthPasswordEncryptor,
+    ): Boolean = authPasswordEncryptor.matches(password, this.password)
 
     companion object {
         fun signUpWithEncryption(
             username: String,
             password: String,
-            authPasswordEncryptorPort: AuthPasswordEncryptorPort,
-        ) = Auth(username = username, password = authPasswordEncryptorPort.encrypt(password))
+            authPasswordEncryptor: AuthPasswordEncryptor,
+        ) = Auth(username = username, password = authPasswordEncryptor.encrypt(password))
     }
 }

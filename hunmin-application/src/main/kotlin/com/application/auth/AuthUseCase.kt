@@ -1,4 +1,4 @@
-package com.domain.auth.port.`in`
+package com.application.auth
 
 import com.domain.auth.port.`in`.command.SignInCommand
 import com.domain.auth.port.`in`.command.SignUpCommand
