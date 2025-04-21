@@ -1,4 +1,4 @@
-package com.common.global.auth.interceptor
+package com.common.global.auth.token
 
 import com.common.global.auth.exception.TokenExceptionType
 import com.common.global.exceptions.base.CustomException
