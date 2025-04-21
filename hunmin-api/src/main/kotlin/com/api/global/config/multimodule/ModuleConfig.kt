@@ -10,8 +10,7 @@ import org.springframework.context.annotation.Configuration
         "com.domain",
         "com.application",
         "com.persistence",
-        "com.adapter"
-    ]
+        "com.adapter",
+    ],
 )
-class ModuleConfig {
-}
+class ModuleConfig

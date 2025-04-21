@@ -12,16 +12,17 @@ import org.springframework.web.servlet.HandlerInterceptor
 @Component
 class LoginValidCheckerInterceptor(
     private val tokenProvider: TokenProvider,
-    private val authenticationContext: AuthenticationContext
+    private val authenticationContext: AuthenticationContext,
 ) : HandlerInterceptor {
-
     override fun preHandle(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        handler: Any
+        handler: Any,
     ): Boolean {
-        val token = AuthenticationExtractor.extract(request)
-            .orElseThrow { CustomException(TokenExceptionType.TOKEN_SIGNATURE_INVALID_EXCEPTION) }
+        val token =
+            AuthenticationExtractor
+                .extract(request)
+                .orElseThrow { CustomException(TokenExceptionType.TOKEN_SIGNATURE_INVALID_EXCEPTION) }
 
         val memberId = tokenProvider.extract(token)
         authenticationContext.setAuthentication(memberId)

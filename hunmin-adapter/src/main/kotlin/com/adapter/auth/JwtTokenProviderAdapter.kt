@@ -1,8 +1,8 @@
 package com.adapter.auth
 
-import com.domain.auth.port.out.TokenProviderPort
 import com.common.global.auth.exception.TokenExceptionType
 import com.common.global.exceptions.base.CustomException
+import com.domain.auth.port.out.TokenProviderPort
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -21,19 +21,20 @@ import javax.crypto.SecretKey
 class JwtTokenProviderAdapter(
     @Value("\${jwt.secret}")
     private val secret: String,
-
     @Value("\${jwt.expiration-period}")
     private val expirationPeriod: Long,
 ) : TokenProviderPort {
-
     private val secretKey: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
 
     override fun create(id: Long): String {
-        val claims = Jwts.claims()
-            .id(id.toString())
-            .build()
+        val claims =
+            Jwts
+                .claims()
+                .id(id.toString())
+                .build()
 
-        return Jwts.builder()
+        return Jwts
+            .builder()
             .claims(claims)
             .issuedAt(issuedAt())
             .expiration(expiredAt())
@@ -53,11 +54,13 @@ class JwtTokenProviderAdapter(
 
     override fun extract(token: String): Long {
         try {
-            return Jwts.parser()
+            return Jwts
+                .parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
-                .body.id.toLong()
+                .body.id
+                .toLong()
         } catch (exception: JwtException) {
             throw handleTokenException(exception)
         } catch (exception: IllegalArgumentException) {
@@ -65,13 +68,12 @@ class JwtTokenProviderAdapter(
         }
     }
 
-    private fun handleTokenException(exception: JwtException): IllegalArgumentException {
-        return when (exception) {
+    private fun handleTokenException(exception: JwtException): IllegalArgumentException =
+        when (exception) {
             is MalformedJwtException -> throw CustomException(TokenExceptionType.TOKEN_MALFORMED_EXCEPTION)
             is ExpiredJwtException -> throw CustomException(TokenExceptionType.TOKEN_EXPIRED_EXCEPTION)
             is UnsupportedJwtException -> throw CustomException(TokenExceptionType.TOKEN_UNSUPPORTED_EXCEPTION)
             is SecurityException -> throw CustomException(TokenExceptionType.TOKEN_SIGNATURE_INVALID_EXCEPTION)
             else -> throw CustomException(TokenExceptionType.TOKEN_INVALID_EXCEPTION)
         }
-    }
 }

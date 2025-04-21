@@ -5,8 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class AuthResponse(
     @Schema(
         description = "Access token",
-        example = "tokeninfo123123...asdvio3"
+        example = "tokeninfo123123...asdvio3",
     )
-    val accessToken: String
-) {
-}
+    val accessToken: String,
+)

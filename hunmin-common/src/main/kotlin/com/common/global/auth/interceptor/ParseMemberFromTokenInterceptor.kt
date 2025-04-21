@@ -10,13 +10,12 @@ import org.springframework.web.servlet.HandlerInterceptor
 @Component
 class ParseMemberIdFromTokenInterceptor(
     private val loginValidCheckerInterceptor: LoginValidCheckerInterceptor,
-    private val authenticationContext: AuthenticationContext
+    private val authenticationContext: AuthenticationContext,
 ) : HandlerInterceptor {
-
     override fun preHandle(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        handler: Any
+        handler: Any,
     ): Boolean {
         if (AuthenticationExtractor.extract(request).isEmpty) {
             authenticationContext.setAnonymous()

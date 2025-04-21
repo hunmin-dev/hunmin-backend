@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authUseCase: AuthUseCase,
 ) : AuthApi {
-
     @PostMapping("/sign-up")
     override fun signUp(request: SignUpRequest): ResponseEntity<AuthResponse> {
         val token = authUseCase.signUp(request.toCommand())
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
             .body(AuthResponse(token))
     }
 

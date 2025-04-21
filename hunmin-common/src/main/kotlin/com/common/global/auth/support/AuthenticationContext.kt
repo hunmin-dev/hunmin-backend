@@ -8,17 +8,15 @@ import org.springframework.web.context.annotation.RequestScope
 @RequestScope
 @Component
 class AuthenticationContext(
-    private var memberId: Long? = null
+    private var memberId: Long? = null,
 ) {
-
     fun setAuthentication(memberId: Long) {
         this.memberId = memberId
     }
 
-    fun getPrincipal(): Long {
-        return memberId
+    fun getPrincipal(): Long =
+        memberId
             ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
-    }
 
     fun setAnonymous() {
         this.memberId = ANONYMOUS_MEMBER

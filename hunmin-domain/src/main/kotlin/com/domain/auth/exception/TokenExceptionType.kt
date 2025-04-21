@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 
 enum class TokenExceptionType : CustomExceptionType {
-
     TOKEN_SIGNATURE_INVALID_EXCEPTION {
         override val subject: String = "JWT_EXCEPTION"
         override val message: String = "토큰의 서명이 잘못 되었습니다."

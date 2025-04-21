@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 
 enum class AuthExceptionType : CustomExceptionType {
-
     AUTH_NOT_FOUND_EXCEPTION {
         override val subject: String = "AUTH_EXCEPTION"
         override val message: String = "인증 정보를 찾을 수 없습니다."

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource
 //        "classpath:application-application-\${spring.profiles.active}.yml",
 //        "classpath:application-adapter-\${spring.profiles.active}.yml",
     ],
-    factory = YamlPropertySourceFactory::class
+    factory = YamlPropertySourceFactory::class,
 )
 @Configuration
 class PropertySourceScanConfig

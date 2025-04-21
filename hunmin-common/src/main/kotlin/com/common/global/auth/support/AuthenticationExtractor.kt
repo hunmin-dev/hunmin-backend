@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest
 import java.util.*
 
 object AuthenticationExtractor {
-
     private const val AUTHORIZATION_HEADER = "Authorization"
     private const val BEARER = "Bearer"
     private const val HEADER_SPLIT_DELIMITER = " "

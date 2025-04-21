@@ -22,13 +22,12 @@ import java.lang.annotation.Target
 @TestExecutionListeners(
     listeners = [
         DependencyInjectionTestExecutionListener::class,
-        DatabaseCleanupListener::class
-    ]
+        DatabaseCleanupListener::class,
+    ],
 )
 annotation class IntegrationTest
 
 class DatabaseCleanupListener : AbstractTestExecutionListener() {
-
     override fun beforeTestExecution(testContext: TestContext) {
         val applicationContext = testContext.applicationContext
         val transactionManager = applicationContext.getBean(PlatformTransactionManager::class.java)
@@ -39,19 +38,23 @@ class DatabaseCleanupListener : AbstractTestExecutionListener() {
     }
 
     private fun applyRestAssuredPort(port: String?) {
-        RestAssured.port = requireNotNull(port?.toIntOrNull()) {
-            "RestAssured port 설정 불가: 'local.server.port'를 사용할 수 없습니다.."
-        }
+        RestAssured.port =
+            requireNotNull(port?.toIntOrNull()) {
+                "RestAssured port 설정 불가: 'local.server.port'를 사용할 수 없습니다.."
+            }
     }
 
     private fun cleanupDatabase(
         entityManager: EntityManager,
-        transactionManager: PlatformTransactionManager
+        transactionManager: PlatformTransactionManager,
     ) {
         TransactionTemplate(transactionManager).executeWithoutResult {
-            val tableNames = entityManager.createNativeQuery(
-                "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'"
-            ).resultList.filterIsInstance<String>()
+            val tableNames =
+                entityManager
+                    .createNativeQuery(
+                        "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'",
+                    ).resultList
+                    .filterIsInstance<String>()
 
             entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate()
             tableNames.forEach { table ->
