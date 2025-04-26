@@ -1,4 +1,4 @@
-package com.application.auth.port.`in`.command
+package com.domain.auth.port.`in`.command
 
 data class SignUpCommand(
     val username: String,

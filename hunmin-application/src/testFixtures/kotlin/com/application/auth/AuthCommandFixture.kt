@@ -1,8 +1,8 @@
 package com.application.auth
 
-import com.application.auth.port.`in`.command.SignInCommand
-import com.application.auth.port.`in`.command.SignUpCommand
 import com.domain.auth.Auth
+import com.domain.auth.port.`in`.command.SignInCommand
+import com.domain.auth.port.`in`.command.SignUpCommand
 
 class AuthCommandFixture {
     companion object {
