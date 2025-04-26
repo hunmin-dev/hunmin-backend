@@ -1,6 +1,6 @@
 package com.domain.auth.port.out
 
-interface AuthPasswordEncryptorPort {
+interface AuthPasswordEncryptor {
     fun encrypt(password: String): String
 
     fun matches(

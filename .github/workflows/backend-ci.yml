@@ -1,12 +1,7 @@
 name: backend-test
 
 on:
-  pull_request:
-    branches:
-      - develop
-    paths:
-      - 'hunmin-backend/**'
-      - '.github/workflows/backend-ci.yml'
+  - pull_request
 
 permissions:
   contents: read

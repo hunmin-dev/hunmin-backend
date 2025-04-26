@@ -1,4 +1,4 @@
-package com.common.global.auth.interceptor
+package com.common.global.auth.token
 
 interface TokenProvider {
     fun create(id: Long): String

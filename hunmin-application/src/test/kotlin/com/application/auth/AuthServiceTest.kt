@@ -3,13 +3,13 @@ package com.application.auth
 import com.application.auth.AuthCommandFixture.Companion.인증_로그인_커맨드
 import com.application.auth.AuthCommandFixture.Companion.인증_생성
 import com.application.auth.AuthCommandFixture.Companion.인증_생성_커맨드
+import com.common.global.auth.token.TokenProvider
 import com.common.global.exceptions.base.CustomException
 import com.domain.auth.exception.AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION
 import com.domain.auth.exception.AuthExceptionType.PASSWORD_INVALID_EXCEPTION
 import com.domain.auth.exception.AuthExceptionType.USERNAME_ALREADY_EXISTS_EXCEPTION
-import com.domain.auth.port.out.AuthPasswordEncryptorPort
+import com.domain.auth.port.out.AuthPasswordEncryptor
 import com.domain.auth.port.out.AuthRepositoryPort
-import com.domain.auth.port.out.TokenProviderPort
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -20,10 +20,10 @@ class AuthServiceTest :
     BehaviorSpec({
 
         val authRepositoryPort: AuthRepositoryPort = mockk()
-        val authPasswordEncryptorPort: AuthPasswordEncryptorPort = mockk()
-        val tokenProviderPort: TokenProviderPort = mockk()
+        val authPasswordEncryptor: AuthPasswordEncryptor = mockk()
+        val tokenProviderPort: TokenProvider = mockk()
 
-        val authService = AuthService(authRepositoryPort, authPasswordEncryptorPort, tokenProviderPort)
+        val authService = AuthService(authRepositoryPort, authPasswordEncryptor, tokenProviderPort)
 
         Given("회원 가입을 할 때") {
             When("닉네임이 이미 존재하면") {
@@ -39,7 +39,7 @@ class AuthServiceTest :
 
             When("닉네임이 존재하지 않으면") {
                 every { authRepositoryPort.existsByUsername(any()) } returns false
-                every { authPasswordEncryptorPort.encrypt(any()) } returns "password"
+                every { authPasswordEncryptor.encrypt(any()) } returns "password"
                 every { authRepositoryPort.save(any()) } returns 인증_생성()
                 every { tokenProviderPort.create(any()) } returns "token"
 
@@ -68,7 +68,7 @@ class AuthServiceTest :
                 every { authRepositoryPort.findByUsername(any()) } returns auth
 
                 Then("패스워드가 일치하지 않으면 예외를 발생시킨다") {
-                    every { authPasswordEncryptorPort.matches(any(), any()) } returns false
+                    every { authPasswordEncryptor.matches(any(), any()) } returns false
                     assertThatThrownBy {
                         authService.signIn(인증_로그인_커맨드())
                     }.isInstanceOf(IllegalArgumentException::class.java)
@@ -76,7 +76,7 @@ class AuthServiceTest :
                 }
 
                 Then("패스워드가 일치한다면 토큰을 반환한다") {
-                    every { authPasswordEncryptorPort.matches(any(), any()) } returns true
+                    every { authPasswordEncryptor.matches(any(), any()) } returns true
                     every { tokenProviderPort.create(any()) } returns "token"
 
                     val response = authService.signIn(인증_로그인_커맨드())
