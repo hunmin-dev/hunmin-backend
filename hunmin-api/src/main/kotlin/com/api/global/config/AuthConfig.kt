@@ -5,6 +5,7 @@ import com.common.global.auth.interceptor.ParseMemberIdFromTokenInterceptor
 import com.common.global.auth.interceptor.PathMatcherInterceptor
 import com.common.global.auth.support.HttpMethod.GET
 import com.common.global.auth.support.HttpMethod.OPTIONS
+import com.common.global.auth.support.HttpMethod.PATCH
 import com.common.global.auth.support.HttpMethod.POST
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.HandlerInterceptor
@@ -24,10 +25,12 @@ class AuthConfig(
     private fun parseMemberIdFromTokenInterceptor(): HandlerInterceptor =
         PathMatcherInterceptor(parseMemberIdFromTokenInterceptor)
             .excludePathPattern("/**", OPTIONS)
+            .addPathPatterns("/category/**", POST, PATCH)
 
     private fun loginValidCheckerInterceptor(): HandlerInterceptor =
         PathMatcherInterceptor(loginValidCheckerInterceptor)
             .excludePathPattern("/**", OPTIONS)
             .excludePathPattern("/auth", POST, GET)
             .addPathPatterns("/auth/test", GET)
+            .addPathPatterns("/category/**", POST, PATCH)
 }

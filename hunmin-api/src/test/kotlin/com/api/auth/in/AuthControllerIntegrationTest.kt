@@ -3,6 +3,7 @@ package com.api.auth.`in`
 import com.api.auth.`in`.request.SignInRequest
 import com.api.auth.`in`.request.SignUpRequest
 import com.api.helper.IntegrationTest
+import com.common.global.auth.role.Role
 import com.domain.auth.Auth
 import com.domain.auth.port.out.AuthPasswordEncryptor
 import com.domain.auth.port.out.AuthRepositoryPort
@@ -50,6 +51,7 @@ class AuthControllerIntegrationTest(
                 username = "username",
                 password = "password",
                 authPasswordEncryptor = authPasswordEncryptor,
+                role = Role.USER,
             ),
         )
         val request = SignInRequest("username", "password")

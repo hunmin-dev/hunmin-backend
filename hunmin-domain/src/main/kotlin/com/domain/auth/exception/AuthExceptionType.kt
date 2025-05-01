@@ -20,6 +20,6 @@ enum class AuthExceptionType : CustomExceptionType {
     PASSWORD_INVALID_EXCEPTION {
         override val subject: String = "AUTH_EXCEPTION"
         override val message: String = "패스워드가 잘못 됐습니다."
-        override val httpStatusCode: HttpStatusCode = HttpStatus.BAD_REQUEST
+        override val httpStatusCode: HttpStatusCode = HttpStatus.UNAUTHORIZED
     },
 }

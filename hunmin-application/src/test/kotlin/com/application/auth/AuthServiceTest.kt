@@ -41,7 +41,7 @@ class AuthServiceTest :
                 every { authRepositoryPort.existsByUsername(any()) } returns false
                 every { authPasswordEncryptor.encrypt(any()) } returns "password"
                 every { authRepositoryPort.save(any()) } returns 인증_생성()
-                every { tokenProviderPort.create(any()) } returns "token"
+                every { tokenProviderPort.create(any(), any()) } returns "token"
 
                 val command = 인증_생성_커맨드()
                 Then("정상 가입이 되고 토큰을 반환한다") {
@@ -71,13 +71,13 @@ class AuthServiceTest :
                     every { authPasswordEncryptor.matches(any(), any()) } returns false
                     assertThatThrownBy {
                         authService.signIn(인증_로그인_커맨드())
-                    }.isInstanceOf(IllegalArgumentException::class.java)
-                        .hasMessageContaining(PASSWORD_INVALID_EXCEPTION.name)
+                    }.isInstanceOf(CustomException::class.java)
+                        .hasMessageContaining(PASSWORD_INVALID_EXCEPTION.message)
                 }
 
                 Then("패스워드가 일치한다면 토큰을 반환한다") {
                     every { authPasswordEncryptor.matches(any(), any()) } returns true
-                    every { tokenProviderPort.create(any()) } returns "token"
+                    every { tokenProviderPort.create(any(), any()) } returns "token"
 
                     val response = authService.signIn(인증_로그인_커맨드())
                     response shouldBe "token"

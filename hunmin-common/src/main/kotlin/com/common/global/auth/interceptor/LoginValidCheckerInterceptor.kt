@@ -25,8 +25,9 @@ class LoginValidCheckerInterceptor(
                 .extract(request)
                 .orElseThrow { CustomException(TokenExceptionType.TOKEN_SIGNATURE_INVALID_EXCEPTION) }
 
-        val memberId = tokenProvider.extract(token)
-        authenticationContext.setAuthentication(memberId)
+        val memberId = tokenProvider.extractId(token)
+        val role = tokenProvider.extractRole(token)
+        authenticationContext.setAuthentication(memberId, role)
 
         return true
     }

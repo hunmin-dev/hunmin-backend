@@ -1,6 +1,8 @@
 package com.common.global.auth.token
 
+import com.common.global.auth.exception.AuthExceptionType
 import com.common.global.auth.exception.TokenExceptionType
+import com.common.global.auth.role.Role
 import com.common.global.exceptions.base.CustomException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
@@ -9,11 +11,11 @@ import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
+import java.util.Date
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import javax.crypto.SecretKey
 
 @Component
@@ -25,11 +27,12 @@ class JwtTokenProvider(
 ) : TokenProvider {
     private val secretKey: SecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
 
-    override fun create(id: Long): String {
+    override fun create(id: Long, role: Role): String {
         val claims =
             Jwts
                 .claims()
                 .id(id.toString())
+                .add("role", role.name)
                 .build()
 
         return Jwts
@@ -51,7 +54,7 @@ class JwtTokenProvider(
         return Date.from(now.plusHours(expirationPeriod).atZone(ZoneId.systemDefault()).toInstant())
     }
 
-    override fun extract(token: String): Long {
+    override fun extractId(token: String): Long {
         try {
             return Jwts
                 .parser()
@@ -75,4 +78,20 @@ class JwtTokenProvider(
             is SecurityException -> throw CustomException(TokenExceptionType.TOKEN_SIGNATURE_INVALID_EXCEPTION)
             else -> throw CustomException(TokenExceptionType.TOKEN_INVALID_EXCEPTION)
         }
+
+    override fun extractRole(token: String): Role {
+        val role = Jwts
+            .parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .body["role"] as? String
+            ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND_EXCEPTION)
+
+        return try {
+            Role.valueOf(role.uppercase())
+        } catch (exception: IllegalArgumentException) {
+            throw CustomException(AuthExceptionType.ROLE_NOT_FOUND_EXCEPTION)
+        }
+    }
 }
