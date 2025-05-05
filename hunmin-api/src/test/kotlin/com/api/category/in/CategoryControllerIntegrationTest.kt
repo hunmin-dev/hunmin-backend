@@ -3,6 +3,8 @@ package com.api.category.`in`
 import com.api.category.`in`.request.CreateRequest
 import com.api.category.`in`.request.UpdateRequest
 import com.api.helper.IntegrationTest
+import com.common.global.auth.role.Role
+import com.common.global.auth.token.TokenProvider
 import com.domain.category.Category
 import com.domain.category.port.out.CategoryRepositoryPort
 import io.restassured.RestAssured
@@ -15,7 +17,10 @@ import kotlin.test.assertEquals
 @IntegrationTest
 class CategoryControllerIntegrationTest(
     @Autowired private val categoryRepositoryPort: CategoryRepositoryPort,
+    @Autowired private val tokenProvider: TokenProvider
 ) {
+    val token = tokenProvider.create(id = 1L, role = Role.ADMIN)
+
     @Test
     fun `카테고리를 생성한다`() {
         // given
@@ -28,6 +33,7 @@ class CategoryControllerIntegrationTest(
                 .log()
                 .all()
                 .`when`()
+                .header("Authorization", "Bearer $token")
                 .contentType(ContentType.JSON)
                 .body(request)
                 .post("/category")
@@ -58,6 +64,7 @@ class CategoryControllerIntegrationTest(
                 .log()
                 .all()
                 .`when`()
+                .header("Authorization", "Bearer $token")
                 .contentType(ContentType.JSON)
                 .body(request)
                 .pathParam("categoryId", 1L)

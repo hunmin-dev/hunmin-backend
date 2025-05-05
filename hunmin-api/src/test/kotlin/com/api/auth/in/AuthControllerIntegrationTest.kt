@@ -65,7 +65,7 @@ class AuthControllerIntegrationTest(
                 .`when`()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .get("/auth/sign-in")
+                .post("/auth/sign-in")
                 .then()
                 .log()
                 .all()
