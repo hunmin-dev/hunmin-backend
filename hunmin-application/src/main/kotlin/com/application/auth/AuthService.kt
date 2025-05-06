@@ -21,7 +21,7 @@ class AuthService(
 ) : AuthUseCase {
     override fun signUp(command: SignUpCommand): String {
         throwWhen(authRepositoryPort.existsByUsername(command.username)) {
-            CustomException(AuthExceptionType.USERNAME_ALREADY_EXISTS_EXCEPTION)
+            CustomException(AuthExceptionType.ALREADY_EXISTS_USERNAME)
         }
 
         val role = Role.findByName(command.role)
@@ -42,10 +42,10 @@ class AuthService(
     override fun signIn(command: SignInCommand): String {
         val auth =
             authRepositoryPort.findByUsername(command.username)
-                ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
+                ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
 
         if (!auth.matches(command.password, authPasswordEncryptor)) {
-            throw CustomException(AuthExceptionType.PASSWORD_INVALID_EXCEPTION)
+            throw CustomException(AuthExceptionType.INVALID_PASSWORD)
         }
 
         return tokenProvider.create(auth.id, auth.role)

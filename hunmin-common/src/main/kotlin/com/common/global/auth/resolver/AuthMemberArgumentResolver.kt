@@ -27,7 +27,7 @@ class AuthMemberArgumentResolver(
         @Nullable binderFactory: WebDataBinderFactory?,
     ): Any? {
         val annotation = parameter.getParameterAnnotation(AuthMember::class.java)
-            ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
+            ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
 
         val role = authenticationContext.getRole()
 

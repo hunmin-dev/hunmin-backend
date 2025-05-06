@@ -19,10 +19,10 @@ class AuthenticationContext(
 
     fun getPrincipal(): Long =
         memberId
-            ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
+            ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
 
     fun getRole(): Role =
-        role ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND_EXCEPTION)
+        role ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
 
     fun setAnonymous() {
         this.memberId = ANONYMOUS_MEMBER

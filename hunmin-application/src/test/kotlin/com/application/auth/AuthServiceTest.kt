@@ -5,9 +5,9 @@ import com.application.auth.AuthCommandFixture.Companion.인증_생성
 import com.application.auth.AuthCommandFixture.Companion.인증_생성_커맨드
 import com.common.global.auth.token.TokenProvider
 import com.common.global.exceptions.base.CustomException
-import com.domain.auth.exception.AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION
-import com.domain.auth.exception.AuthExceptionType.PASSWORD_INVALID_EXCEPTION
-import com.domain.auth.exception.AuthExceptionType.USERNAME_ALREADY_EXISTS_EXCEPTION
+import com.domain.auth.exception.AuthExceptionType.AUTH_NOT_FOUND
+import com.domain.auth.exception.AuthExceptionType.INVALID_PASSWORD
+import com.domain.auth.exception.AuthExceptionType.ALREADY_EXISTS_USERNAME
 import com.domain.auth.port.out.AuthPasswordEncryptor
 import com.domain.auth.port.out.AuthRepositoryPort
 import io.kotest.core.spec.style.BehaviorSpec
@@ -33,7 +33,7 @@ class AuthServiceTest :
                     assertThatThrownBy {
                         authService.signUp(인증_생성_커맨드())
                     }.isInstanceOf(CustomException::class.java)
-                        .hasMessageContaining(USERNAME_ALREADY_EXISTS_EXCEPTION.message)
+                        .hasMessageContaining(ALREADY_EXISTS_USERNAME.message)
                 }
             }
 
@@ -59,7 +59,7 @@ class AuthServiceTest :
                     assertThatThrownBy {
                         authService.signIn(인증_로그인_커맨드())
                     }.isInstanceOf(CustomException::class.java)
-                        .hasMessageContaining(AUTH_NOT_FOUND_EXCEPTION.message)
+                        .hasMessageContaining(AUTH_NOT_FOUND.message)
                 }
             }
 
@@ -72,7 +72,7 @@ class AuthServiceTest :
                     assertThatThrownBy {
                         authService.signIn(인증_로그인_커맨드())
                     }.isInstanceOf(CustomException::class.java)
-                        .hasMessageContaining(PASSWORD_INVALID_EXCEPTION.message)
+                        .hasMessageContaining(INVALID_PASSWORD.message)
                 }
 
                 Then("패스워드가 일치한다면 토큰을 반환한다") {

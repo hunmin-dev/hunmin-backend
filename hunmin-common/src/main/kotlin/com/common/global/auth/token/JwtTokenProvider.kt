@@ -13,7 +13,7 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Date
+import java.util.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import javax.crypto.SecretKey
@@ -66,17 +66,17 @@ class JwtTokenProvider(
         } catch (exception: JwtException) {
             throw handleTokenException(exception)
         } catch (exception: IllegalArgumentException) {
-            throw CustomException(TokenExceptionType.TOKEN_INVALID_EXCEPTION)
+            throw CustomException(TokenExceptionType.INVALID_TOKEN_VALUE)
         }
     }
 
     private fun handleTokenException(exception: JwtException): IllegalArgumentException =
         when (exception) {
-            is MalformedJwtException -> throw CustomException(TokenExceptionType.TOKEN_MALFORMED_EXCEPTION)
-            is ExpiredJwtException -> throw CustomException(TokenExceptionType.TOKEN_EXPIRED_EXCEPTION)
-            is UnsupportedJwtException -> throw CustomException(TokenExceptionType.TOKEN_UNSUPPORTED_EXCEPTION)
-            is SecurityException -> throw CustomException(TokenExceptionType.TOKEN_SIGNATURE_INVALID_EXCEPTION)
-            else -> throw CustomException(TokenExceptionType.TOKEN_INVALID_EXCEPTION)
+            is MalformedJwtException -> throw CustomException(TokenExceptionType.MALFORMED_TOKEN)
+            is ExpiredJwtException -> throw CustomException(TokenExceptionType.EXPIRED_TOKEN)
+            is UnsupportedJwtException -> throw CustomException(TokenExceptionType.UNSUPPORTED_TOKEN_TYPE)
+            is SecurityException -> throw CustomException(TokenExceptionType.INVALID_TOKEN_SIGNATURE)
+            else -> throw CustomException(TokenExceptionType.INVALID_TOKEN_VALUE)
         }
 
     override fun extractRole(token: String): Role {
@@ -86,12 +86,12 @@ class JwtTokenProvider(
             .build()
             .parseSignedClaims(token)
             .body["role"] as? String
-            ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND_EXCEPTION)
+            ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
 
         return try {
             Role.valueOf(role.uppercase())
         } catch (exception: IllegalArgumentException) {
-            throw CustomException(AuthExceptionType.ROLE_NOT_FOUND_EXCEPTION)
+            throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
         }
     }
 }

@@ -13,7 +13,7 @@ enum class Role(val priority: Int) {
     companion object {
         fun findByName(name: String): Role =
             entries.firstOrNull() { it.name.equals(name, ignoreCase = true)}
-                ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND_EXCEPTION)
+                ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
     }
 
     fun atLeast(other: Role): Boolean {

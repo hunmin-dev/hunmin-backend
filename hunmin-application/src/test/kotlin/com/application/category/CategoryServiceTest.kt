@@ -5,7 +5,7 @@ import com.application.category.CategoryCommandFixture.Companion.카테고리_�
 import com.application.category.CategoryCommandFixture.Companion.카테고리_수정_커맨드
 import com.common.global.exceptions.base.CustomException
 import com.domain.category.exception.CategoryExceptionType.ALREADY_EXISTS_CATEGORY
-import com.domain.category.exception.CategoryExceptionType.NOT_FOUND_CATEGORY
+import com.domain.category.exception.CategoryExceptionType.CATEGORY_NOT_FOUND
 import com.domain.category.port.out.CategoryRepositoryPort
 import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.BehaviorSpec
@@ -58,7 +58,7 @@ class CategoryServiceTest : BehaviorSpec({
                 assertThatThrownBy {
                     categoryService.update(memberId = 1L, categoryId = 2L, command = 카테고리_수정_커맨드())
                 }.isInstanceOf(CustomException::class.java)
-                    .hasMessageContaining(NOT_FOUND_CATEGORY.message)
+                    .hasMessageContaining(CATEGORY_NOT_FOUND.message)
             }
         }
 

@@ -33,7 +33,7 @@ class CategoryService(
         command: UpdateCommand,
     ): Category {
         val savedCategory = categoryRepositoryPort.findByCategoryId(categoryId)
-                ?: throw CustomException(CategoryExceptionType.NOT_FOUND_CATEGORY)
+                ?: throw CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
 
         command.title?.let {
             throwWhen(categoryRepositoryPort.existsByTitle(it) && it != savedCategory.title) {
