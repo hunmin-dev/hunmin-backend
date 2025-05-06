@@ -25,19 +25,17 @@ class AuthControllerIntegrationTest(
         val request = SignUpRequest("username", "password")
 
         // when
-        val response =
-            RestAssured
-                .given()
-                .log()
-                .all()
-                .`when`()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .post("/auth/sign-up")
-                .then()
-                .log()
-                .all()
-                .extract()
+        val response = RestAssured.given()
+            .log()
+            .all()
+            .`when`()
+            .contentType(ContentType.JSON)
+            .body(request)
+            .post("/auth/sign-up")
+            .then()
+            .log()
+            .all()
+            .extract()
 
         // then
         assertEquals(response.statusCode(), HttpStatus.CREATED.value())
@@ -57,19 +55,17 @@ class AuthControllerIntegrationTest(
         val request = SignInRequest("username", "password")
 
         // when
-        val response =
-            RestAssured
-                .given()
-                .log()
-                .all()
-                .`when`()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .post("/auth/sign-in")
-                .then()
-                .log()
-                .all()
-                .extract()
+        val response = RestAssured.given()
+            .log()
+            .all()
+            .`when`()
+            .contentType(ContentType.JSON)
+            .body(request)
+            .post("/auth/sign-in")
+            .then()
+            .log()
+            .all()
+            .extract()
 
         // then
         assertEquals(response.statusCode(), HttpStatus.OK.value())

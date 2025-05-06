@@ -27,20 +27,18 @@ class CategoryControllerIntegrationTest(
         val request = CreateRequest(title = "initial-title", isVisible = true)
 
         // when
-        val response =
-            RestAssured
-                .given()
-                .log()
-                .all()
-                .`when`()
-                .header("Authorization", "Bearer $token")
-                .contentType(ContentType.JSON)
-                .body(request)
-                .post("/category")
-                .then()
-                .log()
-                .all()
-                .extract()
+        val response = RestAssured.given()
+            .log()
+            .all()
+            .`when`()
+            .header("Authorization", "Bearer $token")
+            .contentType(ContentType.JSON)
+            .body(request)
+            .post("/category")
+            .then()
+            .log()
+            .all()
+            .extract()
 
         // then
         assertEquals(response.statusCode(), HttpStatus.CREATED.value())
@@ -58,21 +56,19 @@ class CategoryControllerIntegrationTest(
         val request = UpdateRequest(title = "update-title", isVisible = false)
 
         // when
-        val response =
-            RestAssured
-                .given()
-                .log()
-                .all()
-                .`when`()
-                .header("Authorization", "Bearer $token")
-                .contentType(ContentType.JSON)
-                .body(request)
-                .pathParam("categoryId", 1L)
-                .patch("/category/{categoryId}")
-                .then()
-                .log()
-                .all()
-                .extract()
+        val response = RestAssured.given()
+            .log()
+            .all()
+            .`when`()
+            .header("Authorization", "Bearer $token")
+            .contentType(ContentType.JSON)
+            .body(request)
+            .pathParam("categoryId", 1L)
+            .patch("/category/{categoryId}")
+            .then()
+            .log()
+            .all()
+            .extract()
 
         // then
         assertEquals(response.statusCode(), HttpStatus.OK.value())
