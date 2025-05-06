@@ -12,8 +12,6 @@ class CategoryCommandFixture {
                 title = "initial-title",
                 isVisible = true,
                 createdAt = createdAt,
-                createdBy = 1L,
-                updatedBy = 1L,
             )
 
         fun 카테고리_생성_커맨드(): CreateCommand =
