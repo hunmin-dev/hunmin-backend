@@ -1,0 +1,3 @@
+domain:
+  event:
+    isDisable: false # 테스트에서 이벤트 발행 비활성화
