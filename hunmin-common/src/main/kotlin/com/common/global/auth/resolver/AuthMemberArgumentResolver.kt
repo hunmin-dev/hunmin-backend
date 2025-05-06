@@ -25,11 +25,18 @@ class AuthMemberArgumentResolver(
         @Nullable mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
         @Nullable binderFactory: WebDataBinderFactory?,
-    ): Any? =
-        authenticationContext
-            .getPrincipal()
-            .takeIf { it != ANONYMOUS_AUTH_ID }
-            ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
+    ): Any? {
+        val annotation = parameter.getParameterAnnotation(AuthMember::class.java)
+            ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
+
+        val role = authenticationContext.getRole()
+
+        if (role.atLeast(annotation.requiredRole)) {
+            throw CustomException(AuthExceptionType.INSUFFICIENT_ROLE)
+        }
+
+        return authenticationContext.getPrincipal()
+    }
 
     companion object {
         private const val ANONYMOUS_AUTH_ID: Long = -1L

@@ -1,5 +1,6 @@
 package com.domain.auth
 
+import com.common.global.auth.role.Role
 import com.domain.auth.port.out.StubAuthPasswordEncryptorAdaptor
 import io.kotest.assertions.assertSoftly
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -14,9 +15,10 @@ class AuthTest {
         // given
         val rawPassword = "mySecret123"
         val username = "testUser"
+        val role = Role.USER
 
         // when
-        val auth = Auth.signUpWithEncryption(username, rawPassword, authPasswordEncryptorPort)
+        val auth = Auth.signUpWithEncryption(username, rawPassword, authPasswordEncryptorPort, role)
 
         // then
         assertSoftly {

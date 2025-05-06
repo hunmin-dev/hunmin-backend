@@ -1,7 +1,11 @@
 package com.common.global.auth.token
 
-interface TokenProvider {
-    fun create(id: Long): String
+import com.common.global.auth.role.Role
 
-    fun extract(token: String): Long
+interface TokenProvider {
+    fun create(id: Long, role: Role): String
+
+    fun extractId(token: String): Long
+
+    fun extractRole(token: String): Role
 }

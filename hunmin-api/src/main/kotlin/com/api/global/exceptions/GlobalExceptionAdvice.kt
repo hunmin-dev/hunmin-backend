@@ -34,7 +34,7 @@ class GlobalExceptionAdvice {
             .body(
                 ExceptionResponse(
                     name = "INTERNAL_SERVER_ERROR",
-                    customCode = HttpStatus.INTERNAL_SERVER_ERROR,
+                    errorCode = "INTERNAL_SERVER_ERROR",
                     message = exception.message ?: "An unexpected error occurred.",
                 ),
             )
@@ -60,7 +60,7 @@ class GlobalExceptionAdvice {
             .body(
                 ExceptionResponse(
                     name = "VALIDATION_ERROR",
-                    customCode = HttpStatus.BAD_REQUEST,
+                    errorCode = "BAD_REQUEST",
                     message = errorMessage.takeIf { it.isNotBlank() } ?: "Invalid request parameters",
                 ),
             )
@@ -81,7 +81,7 @@ class GlobalExceptionAdvice {
             .body(
                 ExceptionResponse(
                     name = "DESERIALIZATION_ERROR",
-                    customCode = HttpStatus.BAD_REQUEST,
+                    errorCode = "BAD_REQUEST",
                     message = message,
                 ),
             )
@@ -108,7 +108,7 @@ class GlobalExceptionAdvice {
             .body(
                 ExceptionResponse(
                     name = type.subject,
-                    customCode = type.httpStatusCode,
+                    errorCode = type.errorCode,
                     message = type.message,
                 ),
             )

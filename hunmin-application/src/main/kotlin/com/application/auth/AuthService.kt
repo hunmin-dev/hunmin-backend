@@ -1,5 +1,6 @@
 package com.application.auth
 
+import com.common.global.auth.role.Role
 import com.common.global.auth.token.TokenProvider
 import com.common.global.exceptions.base.CustomException
 import com.common.util.throwWhen
@@ -20,8 +21,10 @@ class AuthService(
 ) : AuthUseCase {
     override fun signUp(command: SignUpCommand): String {
         throwWhen(authRepositoryPort.existsByUsername(command.username)) {
-            CustomException(AuthExceptionType.USERNAME_ALREADY_EXISTS_EXCEPTION)
+            CustomException(AuthExceptionType.ALREADY_EXISTS_USERNAME)
         }
+
+        val role = Role.findByName(command.role)
 
         val savedAuth =
             authRepositoryPort.save(
@@ -29,21 +32,22 @@ class AuthService(
                     username = command.username,
                     password = command.password,
                     authPasswordEncryptor = authPasswordEncryptor,
+                    role = role,
                 ),
             )
 
-        return tokenProvider.create(savedAuth.id)
+        return tokenProvider.create(savedAuth.id, role)
     }
 
     override fun signIn(command: SignInCommand): String {
         val auth =
             authRepositoryPort.findByUsername(command.username)
-                ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND_EXCEPTION)
+                ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
 
-        require(auth.matches(command.password, authPasswordEncryptor)) {
-            AuthExceptionType.PASSWORD_INVALID_EXCEPTION
+        if (!auth.matches(command.password, authPasswordEncryptor)) {
+            throw CustomException(AuthExceptionType.INVALID_PASSWORD)
         }
 
-        return tokenProvider.create(auth.id)
+        return tokenProvider.create(auth.id, auth.role)
     }
 }

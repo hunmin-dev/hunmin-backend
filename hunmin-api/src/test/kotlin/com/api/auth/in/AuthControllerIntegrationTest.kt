@@ -3,6 +3,7 @@ package com.api.auth.`in`
 import com.api.auth.`in`.request.SignInRequest
 import com.api.auth.`in`.request.SignUpRequest
 import com.api.helper.IntegrationTest
+import com.common.global.auth.role.Role
 import com.domain.auth.Auth
 import com.domain.auth.port.out.AuthPasswordEncryptor
 import com.domain.auth.port.out.AuthRepositoryPort
@@ -24,19 +25,17 @@ class AuthControllerIntegrationTest(
         val request = SignUpRequest("username", "password")
 
         // when
-        val response =
-            RestAssured
-                .given()
-                .log()
-                .all()
-                .`when`()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .post("/auth/sign-up")
-                .then()
-                .log()
-                .all()
-                .extract()
+        val response = RestAssured.given()
+            .log()
+            .all()
+            .`when`()
+            .contentType(ContentType.JSON)
+            .body(request)
+            .post("/auth/sign-up")
+            .then()
+            .log()
+            .all()
+            .extract()
 
         // then
         assertEquals(response.statusCode(), HttpStatus.CREATED.value())
@@ -50,24 +49,23 @@ class AuthControllerIntegrationTest(
                 username = "username",
                 password = "password",
                 authPasswordEncryptor = authPasswordEncryptor,
+                role = Role.USER,
             ),
         )
         val request = SignInRequest("username", "password")
 
         // when
-        val response =
-            RestAssured
-                .given()
-                .log()
-                .all()
-                .`when`()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .get("/auth/sign-in")
-                .then()
-                .log()
-                .all()
-                .extract()
+        val response = RestAssured.given()
+            .log()
+            .all()
+            .`when`()
+            .contentType(ContentType.JSON)
+            .body(request)
+            .post("/auth/sign-in")
+            .then()
+            .log()
+            .all()
+            .extract()
 
         // then
         assertEquals(response.statusCode(), HttpStatus.OK.value())

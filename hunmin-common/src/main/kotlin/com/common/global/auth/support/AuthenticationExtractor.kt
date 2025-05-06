@@ -1,7 +1,7 @@
 package com.common.global.auth.support
 
 import jakarta.servlet.http.HttpServletRequest
-import java.util.*
+import java.util.Optional
 
 object AuthenticationExtractor {
     private const val AUTHORIZATION_HEADER = "Authorization"
