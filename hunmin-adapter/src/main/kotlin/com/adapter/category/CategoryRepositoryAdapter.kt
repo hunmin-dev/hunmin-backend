@@ -4,6 +4,7 @@ import com.domain.category.Category
 import com.domain.category.port.out.CategoryRepositoryPort
 import com.persistence.category.CategoryJpaRepository
 import com.persistence.category.CategoryPersistenceMapper
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,9 +21,8 @@ class CategoryRepositoryAdapter(
     }
 
     override fun findByCategoryId(categoryId: Long): Category? {
-        return categoryJpaRepository.findById(categoryId)
-            .map { categoryPersistenceMapper.toDomain(it) }
-            .orElse(null)
+        return categoryJpaRepository.findByIdOrNull(categoryId)
+            ?.let { categoryPersistenceMapper.toDomain(it) }
     }
 
     override fun existsByTitle(title: String): Boolean = categoryJpaRepository.existsCategoryByTitle(title)
