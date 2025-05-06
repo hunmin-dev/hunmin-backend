@@ -2,4 +2,7 @@ package com.persistence.todayissue
 
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface TodayIssueJpaRepository : JpaRepository<TodayIssueJpaEntity, Long>
+interface TodayIssueJpaRepository : JpaRepository<TodayIssueJpaEntity, Long> {
+
+    fun findAllByGroupId(groupId: Long): List<TodayIssueJpaEntity>
+}

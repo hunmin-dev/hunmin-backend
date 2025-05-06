@@ -1,30 +1,51 @@
 package com.application.todayissue
 
-import com.domain.todayissue.TodayIssue
+import com.common.global.exceptions.base.CustomException
 import com.domain.todayissue.TodayIssues
+import com.domain.todayissue.dto.TodayIssuesSimpleResponse
+import com.domain.todayissue.event.TodayIssuesPublishedEvent
+import com.domain.todayissue.exception.TodayIssueExceptionType
 import com.domain.todayissue.port.`in`.TodayIssueUseCase
 import com.domain.todayissue.port.`in`.command.TodayIssueCreateCommand
-import com.domain.todayissue.port.`in`.command.TodayIssueCreateManuallyCommand
-import com.domain.todayissue.port.out.TodayIssueRepositoryPort
+import com.domain.todayissue.port.out.TodayIssuesRepositoryPort
+import mu.KotlinLogging
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
 @Service
 class TodayIssueService(
-    private val todayIssueRepositoryPort: TodayIssueRepositoryPort
+    private val todayIssuesRepositoryPort: TodayIssuesRepositoryPort
 ) : TodayIssueUseCase {
 
-    override fun createTodayIssueManually(command: TodayIssueCreateManuallyCommand): TodayIssue {
-        TODO()
+    // TODO 제거 예정
+    // 1. repositoryPort.save(TodayIssues)후 발생하는 도메인 이벤트 핸들러. 추후 알림 정책 수립 후 정책에 맞는 애그리거트로 이전 및 구현 필요
+    // 2. EventListener Adapter로 이전
+    @EventListener(TodayIssuesPublishedEvent::class)
+    fun sendEvent(event: TodayIssuesPublishedEvent) {
+        log.debug("TodayIssues 생성 완료 및 이벤트 발송 완료")
     }
 
-    // TODO : 구체화 때 도메인 생성 이벤트 추가 및 Listner 추가 필요 ()
-    override fun createTodayIssueBatch(commands: List<TodayIssueCreateCommand>): TodayIssues {
-        val todayIssues = todayIssueRepositoryPort.saveAll(commands.map { TodayIssue.from(it) })
-            .let { TodayIssues.from(it) }
-        return todayIssues
+    override fun createTodayIssuesWithBatch(commands: List<TodayIssueCreateCommand>): TodayIssues {
+        return TodayIssues.from(
+            commands.map { it.toTodayIssue() }
+        ).apply {
+            todayIssuesRepositoryPort.save(this)
+        }
     }
 
-    override fun findAllTodayIssues(): List<TodayIssue> {
-        TODO("Not yet implemented")
+    override fun findAllTodayIssuesWithNoOffsetPaging(
+        lastIssueId: Long?,
+        size: Int
+    ): TodayIssuesSimpleResponse {
+        return todayIssuesRepositoryPort.findAllTodayIssuesWithNoOffsetPaging(lastIssueId, size)
+    }
+
+    override fun findTodayIssuesByGroupId(groupId: Long): TodayIssues {
+        return todayIssuesRepositoryPort.findByIdOrNull(groupId)
+            ?: throw CustomException(TodayIssueExceptionType.TODAY_ISSUES_NOT_FOUND_EXCEPTION)
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }

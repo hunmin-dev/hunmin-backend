@@ -1,16 +1,26 @@
 package com.api.todayissue.`in`.response
 
 import com.domain.todayissue.TodayIssue
+import com.domain.todayissue.TodayIssues
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 
 data class TodayIssuesResponse(
+    @Schema(description = "오늘의 이슈 그룹 id")
+    val groupId: Long,
+
+    @Schema(description = "해당하는 오늘의 이슈 날짜")
+    val date: LocalDateTime,
+
     @Schema(description = "오늘의 이슈 모음")
     val issues: List<TodayIssueResponse>
 ) {
 
     companion object {
-        fun from(todayIssues: List<TodayIssue>) = TodayIssuesResponse(
-            issues = todayIssues.map { TodayIssueResponse.from(it) }
+        fun from(todayIssues: TodayIssues) = TodayIssuesResponse(
+            groupId = todayIssues.id,
+            date = todayIssues.createdDate,
+            issues = todayIssues.todayIssues.map { TodayIssueResponse.from(it) }
         )
     }
 }

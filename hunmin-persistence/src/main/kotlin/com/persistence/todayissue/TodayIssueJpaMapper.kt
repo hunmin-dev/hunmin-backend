@@ -12,10 +12,11 @@ class TodayIssueJpaMapper(
     private val authJpaRepository: AuthJpaRepository
 ) {
 
-    fun toEntity(domain: TodayIssue): TodayIssueJpaEntity =
+    fun toEntity(domain: TodayIssue, groupId: Long): TodayIssueJpaEntity =
         TodayIssueJpaEntity(
             id = domain.id,
             writerId = domain.writer.id,
+            groupId = groupId,
             title = domain.todayIssueContent.title,
             content = domain.todayIssueContent.content,
             type = domain.todayIssueContent.type,

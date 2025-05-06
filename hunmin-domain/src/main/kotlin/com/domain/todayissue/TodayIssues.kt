@@ -1,13 +1,23 @@
 package com.domain.todayissue
 
-class TodayIssues private constructor(
-    val todayIssues: List<TodayIssue>
-) {
+import com.domain.aggregate.AggregateRoot
+import com.domain.todayissue.event.TodayIssuesEvent
+import java.time.LocalDateTime
+
+data class TodayIssues(
+    override val id: Long = 0L,
+    val todayIssues: List<TodayIssue>,
+    val createdDate: LocalDateTime,
+) : AggregateRoot<TodayIssuesEvent, Long>() {
 
     companion object {
         fun from(todayIssues: List<TodayIssue>): TodayIssues {
-            // TODO : event 생성 -> 현재는 알림에 이용 / 도메인 이벤트 처리
-            return TodayIssues(todayIssues = todayIssues)
+            return TodayIssues(
+                todayIssues = todayIssues,
+                createdDate = LocalDateTime.now()
+            ).apply {
+                TodayIssuesEvent.created(this)
+            }
         }
     }
 }

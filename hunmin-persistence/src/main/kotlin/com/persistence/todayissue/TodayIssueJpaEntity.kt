@@ -9,12 +9,17 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Lob
+import jakarta.persistence.Table
 
 @Entity
+@Table(name = "today_issue")
 class TodayIssueJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
+
+    @Column(nullable = false)
+    val groupId: Long,
 
     @Column(nullable = false)
     val writerId: Long,

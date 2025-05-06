@@ -1,15 +1,17 @@
 package com.domain.todayissue.port.`in`
 
-import com.domain.todayissue.TodayIssue
 import com.domain.todayissue.TodayIssues
+import com.domain.todayissue.dto.TodayIssuesSimpleResponse
 import com.domain.todayissue.port.`in`.command.TodayIssueCreateCommand
-import com.domain.todayissue.port.`in`.command.TodayIssueCreateManuallyCommand
 
 interface TodayIssueUseCase {
 
-    fun createTodayIssueManually(command: TodayIssueCreateManuallyCommand): TodayIssue
+    fun createTodayIssuesWithBatch(commands: List<TodayIssueCreateCommand>): TodayIssues
 
-    fun createTodayIssueBatch(commands: List<TodayIssueCreateCommand>): TodayIssues
+    fun findTodayIssuesByGroupId(groupId: Long): TodayIssues
 
-    fun findAllTodayIssues(): List<TodayIssue>
+    fun findAllTodayIssuesWithNoOffsetPaging(
+        lastIssueId: Long?,
+        size: Int
+    ): TodayIssuesSimpleResponse
 }
