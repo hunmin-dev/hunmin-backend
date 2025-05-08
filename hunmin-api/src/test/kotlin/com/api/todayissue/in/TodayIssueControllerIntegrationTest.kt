@@ -21,7 +21,9 @@ class TodayIssueControllerIntegrationTest(
             .all()
             .`when`()
             .get("/today-issues")
-            .then().log().all()
+            .then()
+            .log()
+            .all()
             .extract()
 
         // then
@@ -38,7 +40,9 @@ class TodayIssueControllerIntegrationTest(
             .all()
             .`when`()
             .get("/today-issues/1")
-            .then().log().all()
+            .then()
+            .log()
+            .all()
             .extract()
 
         // then

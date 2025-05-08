@@ -3,6 +3,7 @@ package com.persistence.todayissue
 import com.domain.todayissue.dto.TodayIssueSimpleGroupResponse
 import com.domain.todayissue.dto.TodayIssueSimpleResponse
 import com.domain.todayissue.dto.TodayIssuesSimpleResponse
+import com.domain.todayissue.vo.TodayIssueType
 import com.persistence.auth.QAuthJpaEntity.authJpaEntity
 import com.persistence.todayissue.QTodayIssueJpaEntity.todayIssueJpaEntity
 import com.persistence.todayissue.QTodayIssuesJpaEntity.todayIssuesJpaEntity
@@ -47,11 +48,11 @@ class TodayIssuesQueryRepository(
                     .filter { it.get(todayIssueJpaEntity.id) != null }
                     .map {
                         TodayIssueSimpleResponse(
-                            issueId = it.get(todayIssueJpaEntity.id)!!,
-                            title = it.get(todayIssueJpaEntity.title)!!,
-                            writerId = it.get(todayIssueJpaEntity.writerId)!!,
+                            issueId = it.get(todayIssueJpaEntity.id) ?: 0L,
+                            title = it.get(todayIssueJpaEntity.title) ?: "",
+                            writerId = it.get(todayIssueJpaEntity.writerId) ?: 0L,
                             writerName = it.get(authJpaEntity.username) ?: "Unknown",
-                            type = it.get(todayIssueJpaEntity.type)!!
+                            type = it.get(todayIssueJpaEntity.type) ?: TodayIssueType.UNKNOWN,
                         )
                     }
                 TodayIssueSimpleGroupResponse(

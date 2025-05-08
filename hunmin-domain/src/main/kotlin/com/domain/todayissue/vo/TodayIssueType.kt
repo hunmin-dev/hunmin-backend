@@ -6,4 +6,5 @@ enum class TodayIssueType {
     ALGORITHM,
     INTERVIEW,
     BACKEND,
+    UNKNOWN
 }
