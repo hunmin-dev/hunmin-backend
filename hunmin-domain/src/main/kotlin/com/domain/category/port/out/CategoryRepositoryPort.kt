@@ -1,11 +1,9 @@
 package com.domain.category.port.out
 
+import com.domain.aggregate.AggregateRepository
 import com.domain.category.Category
 
-interface CategoryRepositoryPort {
-    fun save(category: Category): Category
-
-    fun findByCategoryId(categoryId: Long): Category?
+interface CategoryRepositoryPort : AggregateRepository<Category, Long> {
 
     fun existsByTitle(title: String): Boolean
 }

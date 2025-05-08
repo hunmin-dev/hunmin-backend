@@ -7,6 +7,7 @@ import com.domain.auth.port.`in`.AuthUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,17 +16,17 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authUseCase: AuthUseCase,
 ) : AuthApi {
+
     @PostMapping("/sign-up")
-    override fun signUp(request: SignUpRequest): ResponseEntity<AuthResponse> {
-        val token = authUseCase.signUp(request.toCommand())
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(AuthResponse(token))
-    }
+    override fun signUp(@RequestBody request: SignUpRequest) =
+        authUseCase.signUp(request.toCommand())
+            .let {
+                ResponseEntity.status(HttpStatus.CREATED)
+                    .body(AuthResponse(it))
+            }
 
     @PostMapping("/sign-in")
-    override fun signIn(request: SignInRequest): ResponseEntity<AuthResponse> {
-        val token = authUseCase.signIn(request.toCommand())
-        return ResponseEntity.ok(AuthResponse(token))
-    }
+    override fun signIn(@RequestBody request: SignInRequest) =
+        authUseCase.signIn(request.toCommand())
+            .let { ResponseEntity.ok(AuthResponse(it)) }
 }

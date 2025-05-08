@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service
 class CategoryService(
     private val categoryRepositoryPort: CategoryRepositoryPort,
 ) : CategoryUseCase {
+
     override fun create(memberId: Long, command: CreateCommand): Category {
         throwWhen(categoryRepositoryPort.existsByTitle(command.title)) {
             CustomException(CategoryExceptionType.ALREADY_EXISTS_CATEGORY)
@@ -32,17 +33,17 @@ class CategoryService(
         categoryId: Long,
         command: UpdateCommand,
     ): Category {
-        val savedCategory = categoryRepositoryPort.findByCategoryId(categoryId)
-                ?: throw CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
+        val savedCategory = categoryRepositoryPort.findByIdOrNull(categoryId)
+            ?: throw CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
 
-        command.title?.let {
-            throwWhen(categoryRepositoryPort.existsByTitle(it) && it != savedCategory.title) {
-                CustomException(CategoryExceptionType.ALREADY_EXISTS_CATEGORY)
+        command.title
+            ?.let {
+                throwWhen(categoryRepositoryPort.existsByTitle(it) && it != savedCategory.title) {
+                    CustomException(CategoryExceptionType.ALREADY_EXISTS_CATEGORY)
+                }
             }
-        }
 
         savedCategory.update(title = command.title, isVisible = command.isVisible)
-
         return savedCategory
     }
 }

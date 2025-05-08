@@ -14,16 +14,16 @@ class CategoryRepositoryAdapter(
     private val categoryJpaRepository: CategoryJpaRepository,
     private val categoryPersistenceMapper: CategoryPersistenceMapper,
 ) : CategoryRepositoryPort {
-    override fun save(category: Category): Category {
-        val categoryEntity = categoryPersistenceMapper.toEntity(category)
+
+    override fun save(aggregate: Category): Category {
+        val categoryEntity = categoryPersistenceMapper.toEntity(aggregate)
         val savedCategory = categoryJpaRepository.save(categoryEntity)
         return categoryPersistenceMapper.toDomain(savedCategory)
     }
 
-    override fun findByCategoryId(categoryId: Long): Category? {
-        return categoryJpaRepository.findByIdOrNull(categoryId)
+    override fun findByIdOrNull(id: Long): Category? =
+        categoryJpaRepository.findByIdOrNull(id)
             ?.let { categoryPersistenceMapper.toDomain(it) }
-    }
 
     override fun existsByTitle(title: String): Boolean = categoryJpaRepository.existsCategoryByTitle(title)
 }

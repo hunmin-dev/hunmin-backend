@@ -19,6 +19,7 @@ class AuthService(
     private val authPasswordEncryptor: AuthPasswordEncryptor,
     private val tokenProvider: TokenProvider,
 ) : AuthUseCase {
+
     override fun signUp(command: SignUpCommand): String {
         throwWhen(authRepositoryPort.existsByUsername(command.username)) {
             CustomException(AuthExceptionType.ALREADY_EXISTS_USERNAME)

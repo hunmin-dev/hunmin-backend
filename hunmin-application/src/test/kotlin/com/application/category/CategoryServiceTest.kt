@@ -12,12 +12,12 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import java.time.Instant
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import java.time.Instant
 
 class CategoryServiceTest : BehaviorSpec({
-    val categoryRepositoryPort: CategoryRepositoryPort = mockk()
 
+    val categoryRepositoryPort: CategoryRepositoryPort = mockk()
     val categoryService = CategoryService(categoryRepositoryPort)
     val fixedCreatedAt = Instant.parse("2025-01-01T00:00:00Z")
 
@@ -52,7 +52,7 @@ class CategoryServiceTest : BehaviorSpec({
 
     Given("카테고리 수정을 할 때") {
         When("id로 카테고리를 찾을 수 없으면") {
-            every { categoryRepositoryPort.findByCategoryId(any()) } returns null
+            every { categoryRepositoryPort.findByIdOrNull(any()) } returns null
 
             Then("예외를 발생시킨다") {
                 assertThatThrownBy {
@@ -63,7 +63,7 @@ class CategoryServiceTest : BehaviorSpec({
         }
 
         When("이미 존재하는 다른 카테고리 제목으로 수정하려 하면") {
-            every { categoryRepositoryPort.findByCategoryId(any()) } returns 카테고리_생성(createdAt = fixedCreatedAt.toEpochMilli())
+            every { categoryRepositoryPort.findByIdOrNull(any()) } returns 카테고리_생성(createdAt = fixedCreatedAt.toEpochMilli())
             every { categoryRepositoryPort.existsByTitle(any()) } returns true
 
             Then("예외를 발생시킨다") {
@@ -75,7 +75,7 @@ class CategoryServiceTest : BehaviorSpec({
         }
 
         When("카테고리가 존재하고 다른 카테고리와 이름이 겹치지 않으면") {
-            every { categoryRepositoryPort.findByCategoryId(any()) } returns 카테고리_생성(createdAt = fixedCreatedAt.toEpochMilli())
+            every { categoryRepositoryPort.findByIdOrNull(any()) } returns 카테고리_생성(createdAt = fixedCreatedAt.toEpochMilli())
             every { categoryRepositoryPort.existsByTitle(any()) } returns false
 
             Then("정상 생성되고 카테고리를 반환한다") {
