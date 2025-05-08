@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @Tag(name = "Auth API")
 interface AuthApi {
+
     @Operation(summary = "회원가입")
     @ApiResponses(
         value = [
