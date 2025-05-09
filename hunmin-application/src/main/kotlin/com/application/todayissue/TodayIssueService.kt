@@ -2,7 +2,6 @@ package com.application.todayissue
 
 import com.common.global.exceptions.base.CustomException
 import com.domain.todayissue.TodayIssues
-import com.domain.todayissue.dto.TodayIssuesSimpleResponse
 import com.domain.todayissue.event.TodayIssuesPublishedEvent
 import com.domain.todayissue.exception.TodayIssueExceptionType
 import com.domain.todayissue.port.`in`.TodayIssueUseCase
@@ -35,10 +34,10 @@ class TodayIssueService(
     override fun findAllTodayIssuesWithNoOffsetPaging(
         lastIssueId: Long?,
         size: Int
-    ): TodayIssuesSimpleResponse =
+    ) =
         todayIssuesRepositoryPort.findAllTodayIssuesWithNoOffsetPaging(lastIssueId, size)
 
-    override fun findTodayIssuesByGroupId(groupId: Long): TodayIssues =
+    override fun findTodayIssuesByGroupId(groupId: Long) =
         todayIssuesRepositoryPort.findByIdOrNull(groupId)
             ?: throw CustomException(TodayIssueExceptionType.TODAY_ISSUES_NOT_FOUND_EXCEPTION)
 
