@@ -1,14 +1,17 @@
 package com.domain.auth
 
 import com.common.global.auth.role.Role
+import com.domain.aggregate.AggregateRoot
+import com.domain.auth.event.AuthEvent
 import com.domain.auth.port.out.AuthPasswordEncryptor
 
 class Auth(
-    val id: Long = 0,
+    override val id: Long = 0,
     val username: String,
     val password: String,
     val role: Role = Role.USER,
-) {
+) : AggregateRoot<AuthEvent, Long>() {
+
     fun matches(
         password: String,
         authPasswordEncryptor: AuthPasswordEncryptor,

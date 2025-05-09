@@ -2,7 +2,6 @@ package com.application.todayissue
 
 import com.common.global.exceptions.base.CustomException
 import com.domain.todayissue.TodayIssues
-import com.domain.todayissue.dto.TodayIssuesSimpleResponse
 import com.domain.todayissue.event.TodayIssuesPublishedEvent
 import com.domain.todayissue.exception.TodayIssueExceptionType
 import com.domain.todayissue.port.`in`.TodayIssueUseCase
@@ -25,25 +24,22 @@ class TodayIssueService(
         log.debug("TodayIssues 생성 완료 및 이벤트 발송 완료")
     }
 
-    override fun createTodayIssuesWithBatch(commands: List<TodayIssueCreateCommand>): TodayIssues {
-        return TodayIssues.from(
+    override fun createTodayIssuesWithBatch(commands: List<TodayIssueCreateCommand>) =
+        TodayIssues.from(
             commands.map { it.toTodayIssue() }
         ).apply {
             todayIssuesRepositoryPort.save(this)
         }
-    }
 
     override fun findAllTodayIssuesWithNoOffsetPaging(
         lastIssueId: Long?,
         size: Int
-    ): TodayIssuesSimpleResponse {
-        return todayIssuesRepositoryPort.findAllTodayIssuesWithNoOffsetPaging(lastIssueId, size)
-    }
+    ) =
+        todayIssuesRepositoryPort.findAllTodayIssuesWithNoOffsetPaging(lastIssueId, size)
 
-    override fun findTodayIssuesByGroupId(groupId: Long): TodayIssues {
-        return todayIssuesRepositoryPort.findByIdOrNull(groupId)
+    override fun findTodayIssuesByGroupId(groupId: Long) =
+        todayIssuesRepositoryPort.findByIdOrNull(groupId)
             ?: throw CustomException(TodayIssueExceptionType.TODAY_ISSUES_NOT_FOUND_EXCEPTION)
-    }
 
     companion object {
         private val log = KotlinLogging.logger { }
