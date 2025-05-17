@@ -4,9 +4,10 @@ plugins {
 rootProject.name = "hunmin-backend"
 include("hunmin-bootstrap")
 include("hunmin-domain")
-include("hunmin-persistence")
 include("hunmin-common")
 include("hunmin-application")
-include("hunmin-adapter")
 include("hunmin-batch")
 include("hunmin-consumer")
+include("hunmin-infrastructure")
+include("hunmin-infrastructure:adapter")
+include("hunmin-infrastructure:persistence")

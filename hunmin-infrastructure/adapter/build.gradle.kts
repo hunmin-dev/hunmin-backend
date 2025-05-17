@@ -12,11 +12,11 @@ dependencies {
     implementation(project(":hunmin-common"))
     implementation(project(":hunmin-domain"))
     implementation(project(":hunmin-application"))
-    implementation(project(":hunmin-persistence"))
+    implementation(project(":hunmin-infrastructure:persistence"))
     testImplementation(testFixtures(project(":hunmin-common")))
     testImplementation(testFixtures(project(":hunmin-domain")))
     testImplementation(testFixtures(project(":hunmin-application")))
-    testImplementation(testFixtures(project(":hunmin-persistence")))
+    testImplementation(testFixtures(project(":hunmin-infrastructure:persistence")))
 
     // security-crypto
     api("org.springframework.security:spring-security-crypto")
