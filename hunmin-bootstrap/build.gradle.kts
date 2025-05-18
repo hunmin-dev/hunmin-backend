@@ -20,6 +20,8 @@ dependencies {
     testImplementation(testFixtures(project(":hunmin-infrastructure:persistence")))
     testImplementation(testFixtures(project(":hunmin-infrastructure:adapter")))
 
-    implementation("org.springframework.boot:spring-boot-starter-batch")
-    testImplementation("org.springframework.batch:spring-batch-test")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // Swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
 }
