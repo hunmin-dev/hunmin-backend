@@ -7,6 +7,7 @@ import com.common.global.auth.support.HttpMethod.GET
 import com.common.global.auth.support.HttpMethod.OPTIONS
 import com.common.global.auth.support.HttpMethod.PATCH
 import com.common.global.auth.support.HttpMethod.POST
+import com.common.global.auth.support.HttpMethod.DELETE
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -26,6 +27,7 @@ class AuthConfig(
         PathMatcherInterceptor(parseMemberIdFromTokenInterceptor)
             .excludePathPattern("/**", OPTIONS)
             .addPathPatterns("/category/**", POST, PATCH)
+            .addPathPatterns("/articles/**", GET, POST, PATCH, DELETE)
 
     private fun loginValidCheckerInterceptor(): HandlerInterceptor =
         PathMatcherInterceptor(loginValidCheckerInterceptor)
@@ -33,4 +35,6 @@ class AuthConfig(
             .excludePathPattern("/auth", POST, GET)
             .addPathPatterns("/auth/test", GET)
             .addPathPatterns("/category/**", POST, PATCH)
+            .addPathPatterns("/articles/**", POST, PATCH, DELETE)
+            .excludePathPattern("/articles/**", GET)
 }

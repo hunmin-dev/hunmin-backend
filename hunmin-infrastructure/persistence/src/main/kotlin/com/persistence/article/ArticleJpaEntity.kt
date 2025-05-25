@@ -1,7 +1,9 @@
 package com.persistence.article
 
+import com.persistence.article.vo.ArticleOptions
 import com.persistence.global.BaseEntity
 import jakarta.persistence.Column
+import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -29,12 +31,6 @@ class ArticleJpaEntity(
     @Column(nullable = false)
     val writerId: Long,
 
-    @Column(nullable = false)
-    val isVisible: Boolean = true,
-
-    @Column(nullable = false)
-    val isBlamed: Boolean = false,
-
-    @Column(nullable = false)
-    val isQuestion: Boolean = false,
+    @Embedded
+    val options: ArticleOptions
 ) : BaseEntity()

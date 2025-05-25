@@ -86,12 +86,16 @@ class JwtTokenProvider(
             .build()
             .parseSignedClaims(token)
             .body["role"] as? String
-            ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
+            ?: ANONYMOUS_ROLE
 
         return try {
             Role.valueOf(role.uppercase())
         } catch (exception: IllegalArgumentException) {
             throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
         }
+    }
+
+    companion object {
+        private val ANONYMOUS_ROLE = "anonymous"
     }
 }

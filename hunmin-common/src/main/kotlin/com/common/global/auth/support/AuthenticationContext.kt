@@ -9,8 +9,8 @@ import org.springframework.web.context.annotation.RequestScope
 @RequestScope
 @Component
 class AuthenticationContext(
-    private var memberId: Long? = null,
-    private var role: Role? = null,
+    private var memberId: Long? = ANONYMOUS_MEMBER,
+    private var role: Role? = Role.ANONYMOUS,
 ) {
     fun setAuthentication(memberId: Long, role: Role) {
         this.memberId = memberId
@@ -22,11 +22,11 @@ class AuthenticationContext(
             ?: throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
 
     fun getRole(): Role =
-        role ?: throw CustomException(AuthExceptionType.ROLE_NOT_FOUND)
+        role ?: Role.ANONYMOUS
 
     fun setAnonymous() {
         this.memberId = ANONYMOUS_MEMBER
-        this.role = null
+        this.role = Role.ANONYMOUS
     }
 
     companion object {

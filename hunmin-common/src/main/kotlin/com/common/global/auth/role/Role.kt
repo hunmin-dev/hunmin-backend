@@ -10,6 +10,7 @@ enum class Role(
     private val priority: Int
 ) {
 
+    ANONYMOUS(-1),
     USER(1),
     ADMIN(2);
 
