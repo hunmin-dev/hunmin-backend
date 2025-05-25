@@ -25,14 +25,14 @@ class Article(
             createdAt = createdAt
         )
 
-    fun update(categoryId: Long?, title: String?, content: String?, isVisible: Boolean?): Article =
+    fun update(categoryId: Long? = null, title: String? = null, content: String? = null, isVisible: Boolean? = null): Article =
         Article(
-            id = id,
+            id = this.id,
             title = title ?: this.title,
             content = content ?: this.content,
             writerId = this.writerId,
             categoryId = categoryId ?: this.categoryId,
-            options = this.options.update(isVisible = isVisible),
+            options = this.options.updateVisible(isVisible = isVisible),
             createdAt = this.createdAt,
         )
 

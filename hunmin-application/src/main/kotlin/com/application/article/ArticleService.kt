@@ -69,7 +69,7 @@ class ArticleService(
             throw CustomException(ArticleExceptionType.MISMATCHED_ARTICLE_WRITER)
         }
 
-        if (member.role == Role.USER && article.isDeleted()) {
+        if (article.isDeleted()) {
             throw CustomException(ArticleExceptionType.ARTICLE_NOT_FOUND)
         }
 
@@ -77,7 +77,7 @@ class ArticleService(
     }
 
     override fun update(memberId: Long, articleId: Long, command: UpdateCommand): Article {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId)
+        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, categoryId = command.categoryId)
 
         val updatedArticle = article.update(
             categoryId = command.categoryId,

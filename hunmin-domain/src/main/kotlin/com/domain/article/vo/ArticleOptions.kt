@@ -19,14 +19,11 @@ data class ArticleOptions(
         return copy(isDeleted = true)
     }
 
-    fun update(isVisible: Boolean?) =
+    fun updateVisible(isVisible: Boolean? = null) =
         this.copy(isVisible = isVisible ?: this.isVisible)
 
     fun isDeletedState() =
         this.isDeleted
-
-    fun isReportedState() =
-        this.isReported
 
     companion object {
         fun createOptions(isVisible: Boolean, isQuestion: Boolean): ArticleOptions = ArticleOptions(
