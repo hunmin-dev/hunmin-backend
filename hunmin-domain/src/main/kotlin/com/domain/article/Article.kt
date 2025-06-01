@@ -14,18 +14,16 @@ class Article(
     val createdAt: Long = 0,
 ) : AggregateRoot<ArticleEvent, Long>() {
 
-    fun delete(): Article =
+    fun delete() =
         Article(
             id = id,
-            title = title,
-            content = content,
-            writerId = writerId,
-            categoryId = categoryId,
+            title = title, content = content,
+            writerId = writerId, categoryId = categoryId,
             options = options.delete(),
             createdAt = createdAt
         )
 
-    fun update(categoryId: Long? = null, title: String? = null, content: String? = null, isVisible: Boolean? = null): Article =
+    fun update(categoryId: Long? = null, title: String? = null, content: String? = null, isVisible: Boolean? = null) =
         Article(
             id = this.id,
             title = title ?: this.title,
@@ -33,35 +31,33 @@ class Article(
             writerId = this.writerId,
             categoryId = categoryId ?: this.categoryId,
             options = this.options.updateVisible(isVisible = isVisible),
-            createdAt = this.createdAt,
+            createdAt = this.createdAt
         )
 
     fun isDeleted() =
         this.options.isDeletedState()
 
-    fun updateReport(reportState: Boolean): Article {
-        return Article(
+    fun updateReport(reportState: Boolean) =
+        Article(
             id = id,
             title = title,
             content = content,
             writerId = this.writerId,
             categoryId = categoryId,
             options = this.options.updateReport(reportState),
-            createdAt = this.createdAt,
+            createdAt = this.createdAt
         )
-    }
 
     companion object {
         fun createArticle(
-            title: String,
-            content: String,
-            categoryId: Long,
-            writerId: Long,
-            isVisible: Boolean,
-            isQuestion: Boolean,
-        ) = Article(
-            title = title, content = content, categoryId = categoryId, writerId = writerId,
-            options = ArticleOptions.createOptions(isVisible = isVisible, isQuestion = isQuestion)
-        )
+            title: String, content: String,
+            categoryId: Long, writerId: Long,
+            isVisible: Boolean, isQuestion: Boolean,
+        ) =
+            Article(
+                title = title, content = content,
+                categoryId = categoryId, writerId = writerId,
+                options = ArticleOptions.createOptions(isVisible = isVisible, isQuestion = isQuestion)
+            )
     }
 }
