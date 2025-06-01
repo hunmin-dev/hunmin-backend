@@ -8,26 +8,26 @@ data class UpdateArticleRequest(
         description = "카테고리 id",
         example = "1",
     )
-    val categoryId: Long?,
+    val categoryId: Long? = null,
 
     @Schema(
         description = "글 제목",
         example = "자바스크립트 비동기 프로그래밍의 이해"
     )
-    val title: String?,
+    val title: String? = null,
 
     @Schema(
         description = "글 내용",
         example = "자바스크립트 비동기 프로그래밍은 현대 웹 개발에서 필수적인 개념입니다."
     )
-    val content: String?,
+    val content: String? = null,
 
     @Schema(
         description = "노출 여부",
         defaultValue = "true",
         example = "true"
     )
-    val isVisible: Boolean?,
+    val isVisible: Boolean? = true,
 ) {
     fun toCommand() =
         UpdateCommand(

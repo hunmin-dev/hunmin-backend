@@ -7,7 +7,6 @@ import com.bootstrap.article.`in`.request.UpdateArticleRequest
 import com.bootstrap.article.`in`.response.ArticleResponse
 import com.common.global.auth.annotation.AuthMember
 import com.common.global.auth.role.Role
-import com.domain.article.dto.ArticlesSimpleResponse
 import com.domain.article.port.`in`.ArticleUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -84,6 +83,7 @@ class ArticleController(
                     .body(it)
             }
 
+    @GetMapping
     override fun findArticlesWithNoOffsetPaging(
         @AuthMember memberId: Long,
         @ModelAttribute request: SearchArticlesRequest

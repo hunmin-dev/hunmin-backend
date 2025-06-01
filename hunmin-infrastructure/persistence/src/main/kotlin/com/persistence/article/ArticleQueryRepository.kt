@@ -52,13 +52,10 @@ class ArticleQueryRepository(
     ): ArticlesSimpleResponse {
         val sortOrder = if (direction.equals("DESC", ignoreCase = true)) Order.DESC else Order.ASC
 
-        val orderSpecifier = when (sort) {
-            "createdAt" -> com.querydsl.core.types.dsl.Expressions.stringPath("createdAt").let {
-                OrderSpecifier(sortOrder, articleJpaEntity.createdAt)
-            }
-            "isTrending" -> OrderSpecifier(sortOrder, articleJpaEntity.options.isTrending)
-            else -> OrderSpecifier(Order.DESC, articleJpaEntity.createdAt)
-        }
+        val orderSpecifier = listOf(
+            OrderSpecifier(sortOrder, articleJpaEntity.options.isTrending),
+            OrderSpecifier(Order.DESC, articleJpaEntity.createdAt)
+        )
 
         val results = jpaQueryFactory
             .select(
@@ -86,9 +83,11 @@ class ArticleQueryRepository(
                 isQuestion?.let { articleJpaEntity.options.isQuestion.eq(isQuestion)},
                 isTrending?.let { articleJpaEntity.options.isTrending.eq(isTrending)},
                 articleJpaEntity.categoryId.`in`(categories),
+                articleJpaEntity.options.isDeleted.eq(false),
+                articleJpaEntity.options.isVisible.eq(true),
                 lastArticleId?.let { articleJpaEntity.id.lt(it) }
             )
-            .orderBy(orderSpecifier)
+            .orderBy(*orderSpecifier.toTypedArray())
             .limit(size.toLong())
             .fetch()
 

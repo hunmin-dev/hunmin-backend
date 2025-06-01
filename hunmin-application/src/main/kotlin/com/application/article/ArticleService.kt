@@ -1,5 +1,6 @@
 package com.application.article
 
+import com.common.global.auth.exception.AuthExceptionType
 import com.common.global.auth.role.Role
 import com.common.global.exceptions.base.CustomException
 import com.common.util.throwWhen
@@ -14,7 +15,6 @@ import com.domain.article.port.`in`.command.UpdateCommand
 import com.domain.article.port.`in`.query.ListArticleFindQuery
 import com.domain.article.port.out.ArticleRepositoryPort
 import com.domain.auth.Auth
-import com.domain.auth.exception.AuthExceptionType
 import com.domain.auth.port.out.AuthRepositoryPort
 import com.domain.category.exception.CategoryExceptionType
 import com.domain.category.port.out.CategoryRepositoryPort
@@ -46,13 +46,13 @@ class ArticleService(
     }
 
     override fun delete(memberId: Long, articleId: Long) {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId)
+        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = false)
 
         val deletedArticle = article.delete()
         articleRepositoryPort.save(deletedArticle)
     }
 
-    private fun validatedArticlePreModifyConditions(memberId: Long, articleId: Long, categoryId: Long? = null): Article {
+    private fun validatedArticlePreModifyConditions(memberId: Long, articleId: Long, isOnlyAdminAllowed: Boolean, categoryId: Long? = null): Article {
         categoryId?.let {
             throwWhen(categoryRepositoryPort.findByIdOrNull(categoryId) == null) {
                 CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
@@ -69,7 +69,11 @@ class ArticleService(
             throw CustomException(ArticleExceptionType.MISMATCHED_ARTICLE_WRITER)
         }
 
-        if (article.isDeleted()) {
+        if (member.role !== Role.ADMIN && isOnlyAdminAllowed) {
+            throw CustomException(AuthExceptionType.INSUFFICIENT_ROLE)
+        }
+
+        if (member.role !== Role.ADMIN && article.isDeleted()) {
             throw CustomException(ArticleExceptionType.ARTICLE_NOT_FOUND)
         }
 
@@ -77,7 +81,7 @@ class ArticleService(
     }
 
     override fun update(memberId: Long, articleId: Long, command: UpdateCommand): Article {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, categoryId = command.categoryId)
+        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = false, categoryId = command.categoryId)
 
         val updatedArticle = article.update(
             categoryId = command.categoryId,
@@ -89,7 +93,7 @@ class ArticleService(
     }
 
     override fun report(memberId: Long, articleId: Long, command: ReportCommand) {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId)
+        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = true)
 
         val reportedArticle = article.updateReport(reportState = command.reportState)
         articleRepositoryPort.save(reportedArticle)

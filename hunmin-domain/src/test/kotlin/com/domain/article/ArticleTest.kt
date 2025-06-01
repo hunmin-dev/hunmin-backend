@@ -139,4 +139,23 @@ class ArticleTest : BehaviorSpec({
             }
         }
     }
+
+    Given("Article을 신고할 때") {
+        val article = Article.createArticle(
+            title = "글 제목", content = "글 내용",
+            categoryId = 1L, writerId = 1L,
+            isVisible = true, isQuestion = false,
+        )
+
+        When("신고 여부를 넘기면") {
+            val reportedArticle = article.updateReport(reportState = true)
+
+            Then("해당 상태로 변경된 새로운 Article을 반환한다") {
+                assertSoftly {
+                    reportedArticle.options.isReported shouldBe true
+                    article.options.isReported shouldBe false
+                }
+            }
+        }
+    }
 })
