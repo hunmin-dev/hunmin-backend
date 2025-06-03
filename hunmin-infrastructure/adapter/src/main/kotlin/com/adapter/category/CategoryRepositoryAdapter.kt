@@ -25,5 +25,9 @@ class CategoryRepositoryAdapter(
         categoryJpaRepository.findByIdOrNull(id)
             ?.let { categoryPersistenceMapper.toDomain(it) }
 
-    override fun existsByTitle(title: String): Boolean = categoryJpaRepository.existsCategoryByTitle(title)
+    override fun existsByTitle(title: String): Boolean =
+        categoryJpaRepository.existsCategoryByTitle(title)
+
+    override fun existsById(id: Long): Boolean =
+        categoryJpaRepository.existsById(id)
 }

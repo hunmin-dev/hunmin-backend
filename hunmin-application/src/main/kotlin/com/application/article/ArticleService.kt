@@ -28,11 +28,11 @@ class ArticleService(
 ): ArticleUseCase {
 
     override fun create(writerId: Long, command: CreateCommand): Article {
-        throwWhen(authRepositoryPort.findByIdOrNull(writerId) == null) {
+        require(authRepositoryPort.existsById(writerId)) {
             CustomException(AuthExceptionType.AUTH_NOT_FOUND)
         }
 
-        throwWhen(categoryRepositoryPort.findByIdOrNull(command.categoryId) == null) {
+        require(categoryRepositoryPort.existsById(command.categoryId)) {
             CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
         }
 

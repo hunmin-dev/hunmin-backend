@@ -6,4 +6,6 @@ import com.domain.category.Category
 interface CategoryRepositoryPort : AggregateRepository<Category, Long> {
 
     fun existsByTitle(title: String): Boolean
+
+    fun existsById(id: Long): Boolean
 }
