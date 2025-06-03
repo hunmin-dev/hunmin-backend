@@ -56,6 +56,7 @@ subprojects {
         add("testImplementation", "io.kotest:kotest-runner-junit5:$kotestVersion")
         add("testImplementation", "io.kotest:kotest-assertions-core:$kotestVersion")
         add("testImplementation", "io.kotest:kotest-property:$kotestVersion")
+        add("testImplementation", "io.kotest:kotest-framework-datatest:$kotestVersion")
 
         // mockk
         add("testImplementation", "io.mockk:mockk:1.13.11")

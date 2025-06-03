@@ -15,6 +15,10 @@ import com.domain.article.ArticleFixture.Companion.일반_글_생성_신고처�
 import com.domain.article.ArticleFixture.Companion.일반_글_생성_작성자id
 import com.domain.article.ArticleFixture.Companion.일반_글_응답_생성
 import com.domain.article.ArticleFixture.Companion.일반_글_페이징_생성
+import com.domain.article.event.ArticleCreatedEvent
+import com.domain.article.event.ArticleDeletedEvent
+import com.domain.article.event.ArticleUpdatedEvent
+import io.kotest.datatest.withData
 import com.domain.article.exception.ArticleExceptionType.ALREADY_DELETED_ARTICLE
 import com.domain.article.exception.ArticleExceptionType.ARTICLE_NOT_FOUND
 import com.domain.article.exception.ArticleExceptionType.MISMATCHED_ARTICLE_WRITER
@@ -32,6 +36,7 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.assertDoesNotThrow
 
@@ -42,6 +47,7 @@ class ArticleServiceTest : BehaviorSpec({
     val categoryRepositoryPort: CategoryRepositoryPort = mockk()
 
     val articleService = ArticleService(articleRepositoryPort, authRepositoryPort, categoryRepositoryPort)
+    val logger = KotlinLogging.logger {}
 
     Given("글 생성을 할 때") {
 
@@ -455,6 +461,24 @@ class ArticleServiceTest : BehaviorSpec({
             Then("ArticlesSimpleResponse가 반환된다") {
                 result shouldBe response
                 verify { articleRepositoryPort.findArticleByQuery(lastArticleId = 0L, size = 10, categories = listOf(1L), sort = "createdAt", direction = "DESC", isQuestion = false, isTrending = true) }
+            }
+        }
+    }
+
+    Given("ArticleEvent가 주어졌을 때") {
+        withData(
+            nameFn = { it::class.simpleName ?: "UnknownEvent" },
+            ArticleCreatedEvent(articleId = 1L, createdDateTime = 1234567890L),
+            ArticleUpdatedEvent(articleId = 2L, updatedDateTime = 1234567890L),
+            ArticleDeletedEvent(articleId = 3L, deletedDateTime = 1234567890L)
+        ) { event ->
+
+            When("sendEvent를 호출하면") {
+                articleService.sendEvent(event)
+
+                Then("이벤트 수신 로그가 출력된다") {
+                    logger.debug { "이벤트 수신 로그 확인: $event" }
+                }
             }
         }
     }

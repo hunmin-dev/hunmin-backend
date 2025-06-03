@@ -21,7 +21,9 @@ class Article private constructor(
             writerId = writerId, categoryId = categoryId,
             options = options.delete(),
             createdAt = createdAt
-        )
+        ).apply {
+            ArticleEvent.deleted(this)
+        }
 
     fun update(categoryId: Long? = null, title: String? = null, content: String? = null, isVisible: Boolean? = null) =
         Article(
@@ -32,7 +34,9 @@ class Article private constructor(
             categoryId = categoryId ?: this.categoryId,
             options = this.options.updateVisible(isVisible = isVisible),
             createdAt = this.createdAt
-        )
+        ).apply {
+            ArticleEvent.updated(this)
+        }
 
     fun isDeleted() =
         this.options.isDeletedState()
@@ -46,7 +50,9 @@ class Article private constructor(
             categoryId = categoryId,
             options = this.options.updateReport(reportState),
             createdAt = this.createdAt
-        )
+        ).apply {
+            ArticleEvent.updated(this)
+        }
 
     companion object {
         fun createArticle(
@@ -58,6 +64,8 @@ class Article private constructor(
                 title = title, content = content,
                 categoryId = categoryId, writerId = writerId,
                 options = ArticleOptions.createOptions(isVisible = isVisible, isQuestion = isQuestion, isDeleted = isDeleted)
-            )
+            ).apply {
+                ArticleEvent.created(this)
+            }
     }
 }

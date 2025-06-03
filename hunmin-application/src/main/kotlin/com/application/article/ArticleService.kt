@@ -7,7 +7,12 @@ import com.common.util.throwWhen
 import com.domain.article.Article
 import com.domain.article.dto.ArticleSimpleResponse
 import com.domain.article.dto.ArticlesSimpleResponse
+import com.domain.article.event.ArticleCreatedEvent
+import com.domain.article.event.ArticleDeletedEvent
+import com.domain.article.event.ArticleEvent
+import com.domain.article.event.ArticleUpdatedEvent
 import com.domain.article.exception.ArticleExceptionType
+import mu.KotlinLogging
 import com.domain.article.port.`in`.ArticleUseCase
 import com.domain.article.port.`in`.command.CreateCommand
 import com.domain.article.port.`in`.command.ReportCommand
@@ -18,6 +23,7 @@ import com.domain.auth.Auth
 import com.domain.auth.port.out.AuthRepositoryPort
 import com.domain.category.exception.CategoryExceptionType
 import com.domain.category.port.out.CategoryRepositoryPort
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,6 +32,16 @@ class ArticleService(
     private val authRepositoryPort: AuthRepositoryPort,
     private val categoryRepositoryPort: CategoryRepositoryPort,
 ): ArticleUseCase {
+
+    // TODO 제거 예정
+    @EventListener(ArticleCreatedEvent::class, ArticleUpdatedEvent::class, ArticleDeletedEvent::class)
+    fun sendEvent(event: ArticleEvent) {
+        when (event) {
+            is ArticleCreatedEvent -> { log.debug { "Article 생성 완료 및 이벤트 발송 완료" } }
+            is ArticleUpdatedEvent -> { log.debug { "Article 수정 완료 및 이벤트 발송 완료" } }
+            is ArticleDeletedEvent -> { log.debug { "Article 삭제 완료 및 이벤트 발송 완료" } }
+        }
+    }
 
     override fun create(writerId: Long, command: CreateCommand): Article {
         require(authRepositoryPort.existsById(writerId)) {
@@ -131,5 +147,9 @@ class ArticleService(
         )
 
         return articlesResponse
+    }
+
+    companion object {
+        private val log = KotlinLogging.logger { }
     }
 }
