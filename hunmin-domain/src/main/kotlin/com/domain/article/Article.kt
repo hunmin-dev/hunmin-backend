@@ -4,7 +4,7 @@ import com.domain.aggregate.AggregateRoot
 import com.domain.article.event.ArticleEvent
 import com.domain.article.vo.ArticleOptions
 
-class Article private constructor(
+class Article(
     override val id: Long = 0,
     val title: String,
     val content: String,
