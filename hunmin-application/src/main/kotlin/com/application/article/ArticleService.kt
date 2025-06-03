@@ -46,15 +46,15 @@ class ArticleService(
     }
 
     override fun delete(memberId: Long, articleId: Long) {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = false)
+        val article = findValidatedUpdatableArticle(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = false)
 
         val deletedArticle = article.delete()
         articleRepositoryPort.save(deletedArticle)
     }
 
-    private fun validatedArticlePreModifyConditions(memberId: Long, articleId: Long, isOnlyAdminAllowed: Boolean, categoryId: Long? = null): Article {
+    private fun findValidatedUpdatableArticle(memberId: Long, articleId: Long, isOnlyAdminAllowed: Boolean, categoryId: Long? = null): Article {
         categoryId?.let {
-            throwWhen(categoryRepositoryPort.findByIdOrNull(categoryId) == null) {
+            require(categoryRepositoryPort.existsById(categoryId)) {
                 CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
             }
         }
@@ -81,7 +81,7 @@ class ArticleService(
     }
 
     override fun update(memberId: Long, articleId: Long, command: UpdateCommand): Article {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = false, categoryId = command.categoryId)
+        val article = findValidatedUpdatableArticle(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = false, categoryId = command.categoryId)
 
         val updatedArticle = article.update(
             categoryId = command.categoryId,
@@ -93,7 +93,7 @@ class ArticleService(
     }
 
     override fun report(memberId: Long, articleId: Long, command: ReportCommand) {
-        val article = validatedArticlePreModifyConditions(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = true)
+        val article = findValidatedUpdatableArticle(memberId = memberId, articleId = articleId, isOnlyAdminAllowed = true)
 
         val reportedArticle = article.updateReport(reportState = command.reportState)
         articleRepositoryPort.save(reportedArticle)
