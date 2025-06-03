@@ -99,7 +99,7 @@ class ArticleService(
         articleRepositoryPort.save(reportedArticle)
     }
 
-    override fun find(memberId: Long, articleId: Long): ArticleSimpleResponse {
+    override fun findVisibleArticle(memberId: Long, articleId: Long): ArticleSimpleResponse {
         val articleResponse = articleRepositoryPort.findArticleById(articleId = articleId)
 
         val member = authRepositoryPort.findByIdOrNull(memberId)

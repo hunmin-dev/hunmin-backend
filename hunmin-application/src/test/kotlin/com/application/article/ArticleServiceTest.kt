@@ -325,7 +325,7 @@ class ArticleServiceTest : BehaviorSpec({
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
-                    articleService.find(memberId = -1L, articleId = 1L)
+                    articleService.findVisibleArticle(memberId = -1L, articleId = 1L)
                 }.isInstanceOf(CustomException::class.java)
                     .hasMessageContaining(ARTICLE_NOT_FOUND.message)
             }
@@ -337,7 +337,7 @@ class ArticleServiceTest : BehaviorSpec({
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
-                    articleService.find(memberId = -1L, articleId = 1L)
+                    articleService.findVisibleArticle(memberId = -1L, articleId = 1L)
                 }.isInstanceOf(CustomException::class.java)
                     .hasMessageContaining(ARTICLE_NOT_FOUND.message)
             }
@@ -349,7 +349,7 @@ class ArticleServiceTest : BehaviorSpec({
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
-                    articleService.find(memberId = 1L, articleId = 1L)
+                    articleService.findVisibleArticle(memberId = 1L, articleId = 1L)
                 }.isInstanceOf(CustomException::class.java)
                     .hasMessageContaining(ARTICLE_NOT_FOUND.message)
             }
@@ -361,7 +361,7 @@ class ArticleServiceTest : BehaviorSpec({
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
-                    articleService.find(memberId = -1L, articleId = 1L)
+                    articleService.findVisibleArticle(memberId = -1L, articleId = 1L)
                 }.isInstanceOf(CustomException::class.java)
                     .hasMessageContaining(ARTICLE_NOT_FOUND.message)
             }
@@ -373,7 +373,7 @@ class ArticleServiceTest : BehaviorSpec({
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
-                    articleService.find(memberId = 1L, articleId = 1L)
+                    articleService.findVisibleArticle(memberId = 1L, articleId = 1L)
                 }.isInstanceOf(CustomException::class.java)
                     .hasMessageContaining(ARTICLE_NOT_FOUND.message)
             }
@@ -384,7 +384,7 @@ class ArticleServiceTest : BehaviorSpec({
             every { articleRepositoryPort.findArticleById(any()) } returns 일반_글_응답_생성()
 
             Then("조회 가능하다") {
-                val article = articleService.find(memberId = -1L, articleId = 1L)
+                val article = articleService.findVisibleArticle(memberId = -1L, articleId = 1L)
 
                 assertSoftly {
                     article.title shouldBe "일반 글"
@@ -400,7 +400,7 @@ class ArticleServiceTest : BehaviorSpec({
             every { articleRepositoryPort.findArticleById(any()) } returns 숨김_글_응답_생성_작성자id(1L)
 
             Then("조회 가능하다") {
-                val article = articleService.find(memberId = 1L, articleId = 1L)
+                val article = articleService.findVisibleArticle(memberId = 1L, articleId = 1L)
 
                 assertSoftly {
                     article.title shouldBe "숨김 글"
@@ -416,7 +416,7 @@ class ArticleServiceTest : BehaviorSpec({
             every { articleRepositoryPort.findArticleById(any()) } returns 숨김_글_응답_생성_작성자id(1L)
 
             Then("조회 가능하다") {
-                val article = articleService.find(memberId = 2L, articleId = 1L)
+                val article = articleService.findVisibleArticle(memberId = 2L, articleId = 1L)
 
                 assertSoftly {
                     article.title shouldBe "숨김 글"
@@ -432,7 +432,7 @@ class ArticleServiceTest : BehaviorSpec({
             every { articleRepositoryPort.findArticleById(any()) } returns 삭제_글_응답_생성()
 
             Then("조회 가능하다") {
-                val article = articleService.find(memberId = 2L, articleId = 1L)
+                val article = articleService.findVisibleArticle(memberId = 2L, articleId = 1L)
 
                 assertSoftly {
                     article.title shouldBe "삭제 글"

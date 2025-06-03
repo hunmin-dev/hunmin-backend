@@ -77,7 +77,7 @@ class ArticleController(
         @AuthMember memberId: Long,
         articleId: Long,
     ) =
-        articleUseCase.find(memberId = memberId, articleId = articleId)
+        articleUseCase.findVisibleArticle(memberId = memberId, articleId = articleId)
             .let {
                 ResponseEntity.status(HttpStatus.OK)
                     .body(it)

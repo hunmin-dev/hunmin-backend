@@ -13,6 +13,6 @@ interface ArticleUseCase {
     fun delete(memberId: Long, articleId: Long): Unit
     fun update(memberId: Long, articleId: Long, command: UpdateCommand): Article
     fun report(memberId: Long, articleId: Long, command: ReportCommand): Unit
-    fun find(memberId: Long, articleId: Long): ArticleSimpleResponse
+    fun findVisibleArticle(memberId: Long, articleId: Long): ArticleSimpleResponse
     fun findArticlesWithNoOffsetPaging(memberId: Long, query: ListArticleFindQuery): ArticlesSimpleResponse
 }
