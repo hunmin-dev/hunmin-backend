@@ -113,7 +113,7 @@ interface ArticleApi {
             ),
         ]
     )
-    @DeleteMapping
+    @DeleteMapping("/{articleId}")
     fun delete(
         @Parameter(hidden = true)
         memberId: Long,
@@ -231,7 +231,7 @@ interface ArticleApi {
             ),
         ]
     )
-    @GetMapping
+    @GetMapping("/{articleId}")
     fun find(
         @Parameter(hidden = true)
         memberId: Long,
