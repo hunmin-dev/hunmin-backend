@@ -94,7 +94,7 @@ class ArticleControllerIntegrationTest(
             .header("Authorization", "Bearer $token")
             .contentType(ContentType.JSON)
             .body(request)
-            .post("/articles/1")
+            .post("/articles/1/reports")
             .then()
             .log()
             .all()

@@ -60,7 +60,7 @@ class ArticleController(
                     .body(ArticleResponse.from(it))
             }
 
-    @PostMapping("/{articleId}")
+    @PostMapping("/{articleId}/reports")
     override fun report(
         @AuthMember(requiredRole = Role.USER) memberId: Long,
         @PathVariable articleId: Long,
