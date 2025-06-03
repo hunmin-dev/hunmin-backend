@@ -45,11 +45,11 @@ class ArticleService(
 
     override fun create(writerId: Long, command: CreateCommand): Article {
         require(authRepositoryPort.existsById(writerId)) {
-            CustomException(AuthExceptionType.AUTH_NOT_FOUND)
+            throw CustomException(AuthExceptionType.AUTH_NOT_FOUND)
         }
 
         require(categoryRepositoryPort.existsById(command.categoryId)) {
-            CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
+            throw CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
         }
 
         return articleRepositoryPort.save(
@@ -71,7 +71,7 @@ class ArticleService(
     private fun findValidatedUpdatableArticle(memberId: Long, articleId: Long, isOnlyAdminAllowed: Boolean, categoryId: Long? = null): Article {
         categoryId?.let {
             require(categoryRepositoryPort.existsById(categoryId)) {
-                CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
+                throw CustomException(CategoryExceptionType.CATEGORY_NOT_FOUND)
             }
         }
 

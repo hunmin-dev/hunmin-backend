@@ -1,10 +1,8 @@
 package com.application.article
 
 import com.application.article.ArticleCommandFixture.Companion.일반_글_생성_커맨드
-import com.application.auth.AuthCommandFixture.Companion.인증_생성
 import com.application.auth.AuthCommandFixture.Companion.인증_생성_id
 import com.application.auth.AuthCommandFixture.Companion.인증_생성_어드민_id
-import com.application.category.CategoryCommandFixture.Companion.카테고리_생성
 import com.common.global.auth.exception.AuthExceptionType.INSUFFICIENT_ROLE
 import com.common.global.exceptions.base.CustomException
 import com.domain.article.ArticleFixture.Companion.삭제_글_생성_작성자id
@@ -52,7 +50,7 @@ class ArticleServiceTest : BehaviorSpec({
     Given("글 생성을 할 때") {
 
         When("회원 정보가 없으면") {
-            every { authRepositoryPort.findByIdOrNull(any()) } returns null
+            every { authRepositoryPort.existsById(any()) } returns false
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
@@ -63,8 +61,8 @@ class ArticleServiceTest : BehaviorSpec({
         }
 
         When("카테고리 정보가 없으면") {
-            every { authRepositoryPort.findByIdOrNull(any()) } returns 인증_생성_id(1L)
-            every { categoryRepositoryPort.findByIdOrNull(any()) } returns null
+            every { authRepositoryPort.existsById(any()) } returns true
+            every { categoryRepositoryPort.existsById(any()) } returns false
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
@@ -75,8 +73,8 @@ class ArticleServiceTest : BehaviorSpec({
         }
 
         When("회원 정보와 카테고리 정보가 모두 있으면") {
-            every { authRepositoryPort.findByIdOrNull(any()) } returns 인증_생성()
-            every { categoryRepositoryPort.findByIdOrNull(any()) } returns 카테고리_생성(createdAt = 1000)
+            every { authRepositoryPort.existsById(any()) } returns true
+            every { categoryRepositoryPort.existsById(any()) } returns true
             every { articleRepositoryPort.save(any()) } returns 일반_글_생성()
 
             Then("정상 생성된다") {
@@ -97,7 +95,7 @@ class ArticleServiceTest : BehaviorSpec({
     Given("글 삭제를 할 때") {
 
         When("회원 정보가 없으면") {
-            every { authRepositoryPort.findByIdOrNull(any()) } returns null
+            every { authRepositoryPort.existsById(any()) } returns false
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
@@ -179,7 +177,7 @@ class ArticleServiceTest : BehaviorSpec({
         When("변경할 대상의 카테고리가 없으면") {
             every { authRepositoryPort.findByIdOrNull(any()) } returns 인증_생성_id(1L)
             every { articleRepositoryPort.findByIdOrNull(any()) } returns 일반_글_생성_작성자id(1L)
-            every { categoryRepositoryPort.findByIdOrNull(any()) } returns null
+            every { categoryRepositoryPort.existsById(any()) } returns false
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
