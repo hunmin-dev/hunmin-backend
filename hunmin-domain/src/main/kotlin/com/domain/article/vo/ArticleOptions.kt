@@ -26,12 +26,12 @@ data class ArticleOptions(
         this.isDeleted
 
     companion object {
-        fun createOptions(isVisible: Boolean, isQuestion: Boolean): ArticleOptions = ArticleOptions(
+        fun createOptions(isVisible: Boolean = true, isQuestion: Boolean = false, isDeleted: Boolean = false): ArticleOptions = ArticleOptions(
             isVisible = isVisible,
             isReported = false,
             isTrending = false,
             isQuestion = isQuestion,
-            isDeleted = false,
+            isDeleted = isDeleted,
         )
     }
 }

@@ -14,30 +14,6 @@ class ArticleTest : BehaviorSpec({
 
     Given("Article을 생성할 때") {
 
-        When("값이 주어지지 않으면") {
-            val article = Article(
-                title = "글 제목", content = "글 내용",
-                writerId = 1L, categoryId = 1L,
-                options = ArticleOptions(),
-            )
-
-            Then("id와 createdAt은 0이고, 옵션 정보는 초기화된다") {
-                assertSoftly {
-                    article.id shouldBe 0L
-                    article.title shouldBe "글 제목"
-                    article.content shouldBe "글 내용"
-                    article.writerId shouldBe 1L
-                    article.categoryId shouldBe 1L
-                    article.options.isVisible shouldBe true
-                    article.options.isReported shouldBe false
-                    article.options.isTrending shouldBe false
-                    article.options.isQuestion shouldBe false
-                    article.options.isDeleted shouldBe false
-                    article.createdAt shouldBe 0L
-                }
-            }
-        }
-
         When("createArticle 메서드를 이용하면") {
             val article = Article.createArticle(
                 title = "글 제목", content = "글 내용",

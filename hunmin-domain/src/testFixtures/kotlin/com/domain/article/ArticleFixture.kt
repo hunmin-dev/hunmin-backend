@@ -22,21 +22,20 @@ class ArticleFixture {
         }
 
         fun 일반_글_생성_작성자id(writerId: Long) =
-            Article(
+            Article.createArticle(
                 title = "글 제목",
                 content = "글 내용",
                 categoryId = 1L,
                 writerId = writerId,
-                options = ArticleOptions(),
             )
 
         fun 삭제_글_생성_작성자id(writerId: Long) =
-            Article(
+            Article.createArticle(
                 title = "글 제목",
                 content = "글 내용",
                 categoryId = 1L,
                 writerId = writerId,
-                options = ArticleOptions(isDeleted = true),
+                isDeleted = true,
             )
 
         fun 일반_글_응답_생성() =

@@ -4,7 +4,7 @@ import com.domain.aggregate.AggregateRoot
 import com.domain.article.event.ArticleEvent
 import com.domain.article.vo.ArticleOptions
 
-class Article(
+class Article private constructor(
     override val id: Long = 0,
     val title: String,
     val content: String,
@@ -52,12 +52,12 @@ class Article(
         fun createArticle(
             title: String, content: String,
             categoryId: Long, writerId: Long,
-            isVisible: Boolean, isQuestion: Boolean,
+            isVisible: Boolean = true, isQuestion: Boolean = false, isDeleted: Boolean = false,
         ) =
             Article(
                 title = title, content = content,
                 categoryId = categoryId, writerId = writerId,
-                options = ArticleOptions.createOptions(isVisible = isVisible, isQuestion = isQuestion)
+                options = ArticleOptions.createOptions(isVisible = isVisible, isQuestion = isQuestion, isDeleted = isDeleted)
             )
     }
 }
