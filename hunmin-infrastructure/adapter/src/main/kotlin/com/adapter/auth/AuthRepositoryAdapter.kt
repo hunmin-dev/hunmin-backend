@@ -33,4 +33,7 @@ class AuthRepositoryAdapter(
 
     override fun existsByUsername(username: String): Boolean =
         authJpaRepository.existsAuthByUsername(username)
+
+    override fun existsById(id: Long): Boolean =
+        authJpaRepository.existsById(id)
 }

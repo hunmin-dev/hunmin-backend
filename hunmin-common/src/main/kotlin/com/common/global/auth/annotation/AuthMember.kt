@@ -9,5 +9,5 @@ import com.common.global.auth.role.Role
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class AuthMember(
-    val requiredRole: Role = Role.USER
+    val requiredRole: Role = Role.ANONYMOUS
 )

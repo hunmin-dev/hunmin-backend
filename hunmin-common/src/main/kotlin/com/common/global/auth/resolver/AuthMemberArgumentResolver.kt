@@ -37,8 +37,4 @@ class AuthMemberArgumentResolver(
 
         return authenticationContext.getPrincipal()
     }
-
-    companion object {
-        private const val ANONYMOUS_AUTH_ID: Long = -1L
-    }
 }
