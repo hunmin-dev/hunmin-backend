@@ -4,7 +4,7 @@ import com.domain.aggregate.AggregateRoot
 import com.domain.subscribe.event.SubscribeEvent
 import com.domain.subscribe.vo.SubscribeOptions
 
-class Subscribe(
+class Subscribe private constructor(
     override val id: Long = 0,
     val memberId: Long,
     val options: SubscribeOptions,

@@ -5,21 +5,17 @@ import com.domain.subscribe.Subscribe
 import com.domain.subscribe.exception.SubscribeExceptionType
 import com.domain.subscribe.port.`in`.command.UpdateSubscribeCommand
 import com.domain.subscribe.port.out.SubscribeRepositoryPort
-import com.domain.subscribe.vo.SubscribeOptions
 import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import mu.KotlinLogging
 import org.assertj.core.api.Assertions.assertThatThrownBy
 
 class SubscribeServiceTest : BehaviorSpec({
 
     val subscribeRepositoryPort: SubscribeRepositoryPort = mockk()
-
     val subscribeService = SubscribeService(subscribeRepositoryPort)
-    val logger = KotlinLogging.logger {}
 
     Given("구독 업데이트를 할 때") {
 
@@ -29,7 +25,7 @@ class SubscribeServiceTest : BehaviorSpec({
             Then("예외가 발생한다") {
                 assertThatThrownBy {
                     subscribeService.update(
-                        memberId = 1L,
+                        memberId = 0L,
                         subscribeId = 1L,
                         command = UpdateSubscribeCommand(null, null, null, null)
                     )
@@ -39,23 +35,10 @@ class SubscribeServiceTest : BehaviorSpec({
         }
 
         When("알림 구독 정보가 정상적으로 존재할 때") {
-            every { subscribeRepositoryPort.findByIdAndMemberId(any(), any()) } returns Subscribe(
-                id = 1L,
-                memberId = 1L,
-                options = SubscribeOptions(),
-                createdAt = 123456789L
+            every { subscribeRepositoryPort.findByIdAndMemberId(any(), any()) } returns Subscribe.createSubscribe(
+                memberId = 1L
             )
-            every { subscribeRepositoryPort.save(any()) } returns Subscribe(
-                id = 1L,
-                memberId = 1L,
-                options = SubscribeOptions(
-                    receiveArticleNotifications = false,
-                    receiveTodayIssueNotifications = false,
-                    receiveCommentNotifications = false,
-                    receiveReplyNotifications = false
-                ),
-                createdAt = 123456789L
-            )
+            every { subscribeRepositoryPort.save(any()) } returns Subscribe.createSubscribe(memberId = 1L)
 
             Then("업데이트된 구독 정보를 반환한다") {
                 val subscribe = subscribeService.update(
@@ -70,7 +53,7 @@ class SubscribeServiceTest : BehaviorSpec({
                 )
 
                 assertSoftly {
-                    subscribe.id shouldBe 1L
+                    subscribe.id shouldBe 0L
                     subscribe.memberId shouldBe 1L
                     subscribe.options.receiveArticleNotifications shouldBe false
                     subscribe.options.receiveTodayIssueNotifications shouldBe false
@@ -95,18 +78,13 @@ class SubscribeServiceTest : BehaviorSpec({
         }
 
         When("회원 정보가 있으면") {
-            every { subscribeRepositoryPort.findByMemberId(any()) } returns Subscribe(
-                id = 1L,
-                memberId = 1L,
-                options = SubscribeOptions(),
-                createdAt = 123456789L
-            )
+            every { subscribeRepositoryPort.findByMemberId(any()) } returns Subscribe.createSubscribe(memberId = 1L)
 
             Then("구독 정보를 반환한다") {
                 val subscribe = subscribeService.findByMemberId(memberId = 1L)
 
                 assertSoftly {
-                    subscribe.id shouldBe 1L
+                    subscribe.id shouldBe 0L
                     subscribe.memberId shouldBe 1L
                     subscribe.options.receiveArticleNotifications shouldBe false
                     subscribe.options.receiveTodayIssueNotifications shouldBe false
