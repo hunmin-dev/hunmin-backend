@@ -2,8 +2,6 @@ package com.application.subscribe
 
 import com.common.global.exceptions.base.CustomException
 import com.domain.subscribe.Subscribe
-import com.domain.subscribe.event.SubscribeCreatedEvent
-import com.domain.subscribe.event.SubscribeUpdatedEvent
 import com.domain.subscribe.exception.SubscribeExceptionType
 import com.domain.subscribe.port.`in`.command.UpdateSubscribeCommand
 import com.domain.subscribe.port.out.SubscribeRepositoryPort
@@ -31,7 +29,7 @@ class SubscribeServiceTest : BehaviorSpec({
             Then("예외가 발생한다") {
                 assertThatThrownBy {
                     subscribeService.update(
-                        userId = 1L,
+                        memberId = 1L,
                         subscribeId = 1L,
                         command = UpdateSubscribeCommand(null, null, null, null)
                     )
@@ -61,7 +59,7 @@ class SubscribeServiceTest : BehaviorSpec({
 
             Then("업데이트된 구독 정보를 반환한다") {
                 val subscribe = subscribeService.update(
-                    userId = 1L,
+                    memberId = 1L,
                     subscribeId = 1L,
                     command = UpdateSubscribeCommand(
                         receiveArticleNotifications = false,
@@ -86,18 +84,18 @@ class SubscribeServiceTest : BehaviorSpec({
     Given("구독 조회를 할 때") {
 
         When("회원 정보가 없으면") {
-            every { subscribeRepositoryPort.findByUserId(any()) } returns null
+            every { subscribeRepositoryPort.findByMemberId(any()) } returns null
 
             Then("예외가 발생한다") {
                 assertThatThrownBy {
-                    subscribeService.findByUserId(userId = 1L)
+                    subscribeService.findByMemberId(memberId = 1L)
                 }.isInstanceOf(CustomException::class.java)
                     .hasMessageContaining(SubscribeExceptionType.SUBSCRIBE_NOT_FOUND.message)
             }
         }
 
         When("회원 정보가 있으면") {
-            every { subscribeRepositoryPort.findByUserId(any()) } returns Subscribe(
+            every { subscribeRepositoryPort.findByMemberId(any()) } returns Subscribe(
                 id = 1L,
                 memberId = 1L,
                 options = SubscribeOptions(),
@@ -105,7 +103,7 @@ class SubscribeServiceTest : BehaviorSpec({
             )
 
             Then("구독 정보를 반환한다") {
-                val subscribe = subscribeService.findByUserId(userId = 1L)
+                val subscribe = subscribeService.findByMemberId(memberId = 1L)
 
                 assertSoftly {
                     subscribe.id shouldBe 1L
@@ -115,20 +113,6 @@ class SubscribeServiceTest : BehaviorSpec({
                     subscribe.options.receiveCommentNotifications shouldBe false
                     subscribe.options.receiveReplyNotifications shouldBe false
                 }
-            }
-        }
-    }
-
-    Given("SubscribeEvent가 주어졌을 때") {
-        val createdEvent = SubscribeCreatedEvent(subscribeId = 1L, createdDateTime = 1234567890L)
-        val updatedEvent = SubscribeUpdatedEvent(subscribeId = 2L, updatedDateTime = 1234567890L)
-
-        When("sendEvent를 호출하면") {
-            subscribeService.sendEvent(createdEvent)
-            subscribeService.sendEvent(updatedEvent)
-
-            Then("이벤트 수신 로그가 출력된다") {
-                logger.debug { "이벤트 수신 로그 확인: $createdEvent, $updatedEvent" }
             }
         }
     }

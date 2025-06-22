@@ -1,7 +1,5 @@
 package com.persistence.subscribe
 
-import com.domain.subscribe.Subscribe
-import com.domain.subscribe.vo.SubscribeOptions
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -34,34 +32,4 @@ class SubscribeEntity(
 
     @Column(name = "created_at", nullable = false)
     val createdAt: Long = Instant.now().toEpochMilli(),
-) {
-    fun toDomain(): Subscribe {
-        val options = SubscribeOptions(
-            receiveArticleNotifications = receiveArticleNotifications,
-            receiveTodayIssueNotifications = receiveTodayIssueNotifications,
-            receiveCommentNotifications = receiveCommentNotifications,
-            receiveReplyNotifications = receiveReplyNotifications
-        )
-
-        return Subscribe(
-            id = id,
-            memberId = memberId,
-            options = options,
-            createdAt = createdAt
-        )
-    }
-
-    companion object {
-        fun from(domain: Subscribe): SubscribeEntity {
-            return SubscribeEntity(
-                id = domain.id,
-                memberId = domain.memberId,
-                receiveArticleNotifications = domain.options.receiveArticleNotifications,
-                receiveTodayIssueNotifications = domain.options.receiveTodayIssueNotifications,
-                receiveCommentNotifications = domain.options.receiveCommentNotifications,
-                receiveReplyNotifications = domain.options.receiveReplyNotifications,
-                createdAt = domain.createdAt
-            )
-        }
-    }
-}
+)

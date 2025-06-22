@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface SubscribeJpaRepository : JpaRepository<SubscribeEntity, Long> {
-    fun findByUserId(userId: Long): SubscribeEntity?
-    fun findByIdAndMemberId(userId: Long, memberId: Long): SubscribeEntity?
-    fun existsByUserId(userId: Long): Boolean
+    fun findByMemberId(memberId: Long): SubscribeEntity?
+    fun findByIdAndMemberId(id: Long, memberId: Long): SubscribeEntity?
+    fun existsByMemberId(memberId: Long): Boolean
 }

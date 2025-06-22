@@ -32,9 +32,9 @@ class Subscribe(
         }
 
     companion object {
-        fun createSubscribe(userId: Long) =
+        fun createSubscribe(memberId: Long) =
             Subscribe(
-                memberId = userId,
+                memberId = memberId,
                 options = SubscribeOptions.createDefaultOptions()
             ).apply {
                 SubscribeEvent.created(this)

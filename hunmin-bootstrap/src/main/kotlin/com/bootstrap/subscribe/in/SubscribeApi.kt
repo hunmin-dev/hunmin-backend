@@ -20,14 +20,14 @@ interface SubscribeApi {
     @Operation(summary = "알림 구독 정보 변경")
     @PatchMapping("/{subscribeId}")
     fun update(
-        @AuthMember(requiredRole = Role.USER) userId: Long,
+        @AuthMember(requiredRole = Role.USER) memberId: Long,
         @PathVariable subscribeId: Long,
         @RequestBody request: UpdateSubscribeRequest
     ): ResponseEntity<SubscribeResponse>
 
     @Operation(summary = "알림 구독 정보 조회")
     @GetMapping
-    fun findByUserId(
-        @AuthMember(requiredRole = Role.USER) userId: Long
+    fun findByMemberId(
+        @AuthMember(requiredRole = Role.USER) memberId: Long
     ): ResponseEntity<SubscribeResponse?>
 }

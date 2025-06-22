@@ -14,7 +14,7 @@ class SubscribeEventListener(
     @EventListener(AuthCreatedEvent::class)
     fun saveDefaultSubscribe(event: AuthCreatedEvent) {
         subscribeUseCase.create(
-            userId = event.authId,
+            memberId = event.memberId,
             command = CreateSubscribeCommand()
         )
     }

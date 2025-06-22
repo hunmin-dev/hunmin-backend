@@ -4,7 +4,7 @@ import com.domain.subscribe.Subscribe
 
 data class SubscribeResponse(
     val id: Long,
-    val userId: Long,
+    val memberId: Long,
     val receiveArticleNotifications: Boolean,
     val receiveTodayIssueNotifications: Boolean,
     val receiveCommentNotifications: Boolean,
@@ -14,7 +14,7 @@ data class SubscribeResponse(
         fun from(subscribe: Subscribe): SubscribeResponse {
             return SubscribeResponse(
                 id = subscribe.id,
-                userId = subscribe.memberId,
+                memberId = subscribe.memberId,
                 receiveArticleNotifications = subscribe.options.receiveArticleNotifications,
                 receiveTodayIssueNotifications = subscribe.options.receiveTodayIssueNotifications,
                 receiveCommentNotifications = subscribe.options.receiveCommentNotifications,

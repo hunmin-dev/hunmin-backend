@@ -22,21 +22,21 @@ class SubscribeController(
 
     @PatchMapping("/{subscribeId}")
     override fun update(
-        @AuthMember(requiredRole = Role.USER) userId: Long,
+        @AuthMember(requiredRole = Role.USER) memberId: Long,
         @PathVariable subscribeId: Long,
         @RequestBody request: UpdateSubscribeRequest
     ): ResponseEntity<SubscribeResponse> =
-        subscribeUseCase.update(userId = userId, subscribeId = subscribeId, command = request.toCommand())
+        subscribeUseCase.update(memberId = memberId, subscribeId = subscribeId, command = request.toCommand())
             .let {
                 ResponseEntity.status(HttpStatus.OK)
                     .body(SubscribeResponse.from(it))
             }
 
     @GetMapping
-    override fun findByUserId(
-        @AuthMember(requiredRole = Role.USER) userId: Long
+    override fun findByMemberId(
+        @AuthMember(requiredRole = Role.USER) memberId: Long
     ): ResponseEntity<SubscribeResponse?> =
-        subscribeUseCase.findByUserId(userId = userId)
+        subscribeUseCase.findByMemberId(memberId = memberId)
             .let {
                 ResponseEntity.status(HttpStatus.OK)
                     .body(SubscribeResponse.from(it))

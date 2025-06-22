@@ -10,7 +10,7 @@ sealed class AuthEvent : DomainEvent {
         fun created(auth: Auth) {
             auth.addEvent(
                 AuthCreatedEvent(
-                    authId = auth.id,
+                    memberId = auth.id,
                     createdDate = LocalDateTime.now(),
                 )
             )
@@ -19,6 +19,6 @@ sealed class AuthEvent : DomainEvent {
 }
 
 class AuthCreatedEvent(
-    val authId: Long,
+    val memberId: Long,
     val createdDate: LocalDateTime,
 ) : AuthEvent()

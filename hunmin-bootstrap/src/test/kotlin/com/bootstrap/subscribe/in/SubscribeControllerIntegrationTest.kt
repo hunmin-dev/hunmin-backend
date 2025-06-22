@@ -4,9 +4,6 @@ import com.bootstrap.helper.IntegrationTest
 import com.bootstrap.subscribe.`in`.request.UpdateSubscribeRequest
 import com.common.global.auth.role.Role
 import com.common.global.auth.token.TokenProvider
-import com.domain.auth.Auth
-import com.domain.auth.port.out.AuthPasswordEncryptor
-import com.domain.auth.port.out.AuthRepositoryPort
 import com.domain.subscribe.Subscribe
 import com.domain.subscribe.port.out.SubscribeRepositoryPort
 import io.restassured.RestAssured
@@ -19,27 +16,18 @@ import kotlin.test.assertEquals
 
 @IntegrationTest
 class SubscribeControllerIntegrationTest(
+    @Autowired private val tokenProvider: TokenProvider,
     @Autowired private val subscribeRepositoryPort: SubscribeRepositoryPort,
-    @Autowired private val authRepositoryPort: AuthRepositoryPort,
-    @Autowired private val authPasswordEncryptor: AuthPasswordEncryptor,
-    @Autowired private val tokenProvider: TokenProvider
 ) {
 
     private lateinit var token: String
+    private lateinit var subscribe: Subscribe
 
     @BeforeEach
     fun setup() {
-        token = tokenProvider.create(id = 1L, role = Role.USER)
-        authRepositoryPort.save(
-            Auth.signUpWithEncryption(
-                username = "user",
-                password = "password",
-                authPasswordEncryptor = authPasswordEncryptor,
-                role = Role.USER
-            )
-        )
-        subscribeRepositoryPort.save(
-            Subscribe.createSubscribe(userId = 1L)
+        this.token = tokenProvider.create(id = 1, role = Role.USER)
+        this.subscribe = subscribeRepositoryPort.save(
+            Subscribe.createSubscribe(memberId = 1)
         )
     }
 
@@ -61,7 +49,7 @@ class SubscribeControllerIntegrationTest(
             .header("Authorization", "Bearer $token")
             .contentType(ContentType.JSON)
             .body(request)
-            .put("/subscribes/1")
+            .patch("/subscribes/${subscribe.id}")
             .then()
             .log()
             .all()

@@ -11,7 +11,7 @@ class SubscribeTest : BehaviorSpec({
     Given("Subscribe를 생성할 때") {
 
         When("createSubscribe 메서드를 이용하면") {
-            val subscribe = Subscribe.createSubscribe(userId = 1L)
+            val subscribe = Subscribe.createSubscribe(memberId = 1L)
 
             Then("기본 값으로 생성된다") {
                 assertSoftly {
@@ -26,7 +26,7 @@ class SubscribeTest : BehaviorSpec({
     }
 
     Given("Subscribe를 수정할 때") {
-        val subscribe = Subscribe.createSubscribe(userId = 1L)
+        val subscribe = Subscribe.createSubscribe(memberId = 1L)
 
         When("값이 주어지지 않으면") {
             val updatedSubscribe = subscribe.update(null, null, null, null)
@@ -48,7 +48,7 @@ class SubscribeTest : BehaviorSpec({
             val updatedOptions = SubscribeOptions.createDefaultOptions()
             val updatedSubscribe = subscribe.update(true, true, true, true)
 
-            Then("id, userId, createdAt이 같은 Subscribe를 반환한다") {
+            Then("id, memberId, createdAt이 같은 Subscribe를 반환한다") {
                 assertSoftly {
                     updatedSubscribe.id shouldBe subscribe.id
                     updatedSubscribe.memberId shouldBe subscribe.memberId
