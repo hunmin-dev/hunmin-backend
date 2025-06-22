@@ -8,7 +8,6 @@ import com.domain.subscribe.Subscribe
 import com.domain.subscribe.port.out.SubscribeRepositoryPort
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
-import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import kotlin.test.Test
@@ -20,20 +19,13 @@ class SubscribeControllerIntegrationTest(
     @Autowired private val subscribeRepositoryPort: SubscribeRepositoryPort,
 ) {
 
-    private lateinit var token: String
-    private lateinit var subscribe: Subscribe
-
-    @BeforeEach
-    fun setup() {
-        this.token = tokenProvider.create(id = 1, role = Role.USER)
-        this.subscribe = subscribeRepositoryPort.save(
-            Subscribe.createSubscribe(memberId = 1)
-        )
-    }
+    var token = tokenProvider.create(id = 1, role = Role.USER)
 
     @Test
     fun `구독 설정을 업데이트한다`() {
         // given
+        subscribeRepositoryPort.save(Subscribe.createSubscribe(1L))
+
         val request = UpdateSubscribeRequest(
             receiveArticleNotifications = true,
             receiveTodayIssueNotifications = true,
@@ -49,7 +41,7 @@ class SubscribeControllerIntegrationTest(
             .header("Authorization", "Bearer $token")
             .contentType(ContentType.JSON)
             .body(request)
-            .patch("/subscribes/${subscribe.id}")
+            .patch("/subscribes/1")
             .then()
             .log()
             .all()
@@ -61,6 +53,9 @@ class SubscribeControllerIntegrationTest(
 
     @Test
     fun `구독 설정을 조회한다`() {
+        // given
+        subscribeRepositoryPort.save(Subscribe.createSubscribe(1L))
+
         // when
         val response = RestAssured.given()
             .log()
