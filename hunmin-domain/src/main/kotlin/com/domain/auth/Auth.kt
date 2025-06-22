@@ -23,7 +23,14 @@ class Auth(
             password: String,
             authPasswordEncryptor: AuthPasswordEncryptor,
             role: Role,
-        ) = Auth(username = username, password = authPasswordEncryptor.encrypt(password), role = role)
+        ) =
+            Auth(
+                username = username,
+                password = authPasswordEncryptor.encrypt(password),
+                role = role
+            ).apply {
+                AuthEvent.created(this)
+            }
 
         fun anonymousAuth() =
             Auth(
@@ -31,6 +38,8 @@ class Auth(
                 username = "",
                 password = "",
                 role = Role.ANONYMOUS
-            )
+            ).apply {
+                AuthEvent.created(this)
+            }
     }
 }
