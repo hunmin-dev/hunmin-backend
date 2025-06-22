@@ -1,4 +1,4 @@
-package com.persistence.subscribe.entity
+package com.persistence.subscribe
 
 import com.domain.subscribe.Subscribe
 import com.domain.subscribe.vo.SubscribeOptions

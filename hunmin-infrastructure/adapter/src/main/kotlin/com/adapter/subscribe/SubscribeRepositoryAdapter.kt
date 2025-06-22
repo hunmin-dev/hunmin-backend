@@ -1,9 +1,9 @@
-package com.persistence.subscribe
+package com.adapter.subscribe
 
 import com.domain.subscribe.Subscribe
 import com.domain.subscribe.port.out.SubscribeRepositoryPort
-import com.persistence.subscribe.entity.SubscribeEntity
-import com.persistence.subscribe.repository.SubscribeJpaRepository
+import com.persistence.subscribe.SubscribeEntity
+import com.persistence.subscribe.SubscribeJpaRepository
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 

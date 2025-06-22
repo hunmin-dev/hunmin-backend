@@ -1,6 +1,5 @@
-package com.persistence.subscribe.repository
+package com.persistence.subscribe
 
-import com.persistence.subscribe.entity.SubscribeEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
