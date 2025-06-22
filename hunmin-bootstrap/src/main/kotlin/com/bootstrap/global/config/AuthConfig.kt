@@ -3,11 +3,11 @@ package com.bootstrap.global.config
 import com.common.global.auth.interceptor.LoginValidCheckerInterceptor
 import com.common.global.auth.interceptor.ParseMemberIdFromTokenInterceptor
 import com.common.global.auth.interceptor.PathMatcherInterceptor
+import com.common.global.auth.support.HttpMethod.DELETE
 import com.common.global.auth.support.HttpMethod.GET
 import com.common.global.auth.support.HttpMethod.OPTIONS
 import com.common.global.auth.support.HttpMethod.PATCH
 import com.common.global.auth.support.HttpMethod.POST
-import com.common.global.auth.support.HttpMethod.DELETE
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -33,8 +33,7 @@ class AuthConfig(
         PathMatcherInterceptor(loginValidCheckerInterceptor)
             .excludePathPattern("/**", OPTIONS)
             .excludePathPattern("/auth", POST, GET)
-            .addPathPatterns("/auth/test", GET)
             .addPathPatterns("/category/**", POST, PATCH)
             .addPathPatterns("/articles/**", POST, PATCH, DELETE)
-            .excludePathPattern("/articles/**", GET)
+            .addPathPatterns("/subscribes/**", GET, POST, PATCH, DELETE)
 }
