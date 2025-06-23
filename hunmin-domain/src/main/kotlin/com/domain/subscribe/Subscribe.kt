@@ -3,12 +3,13 @@ package com.domain.subscribe
 import com.domain.aggregate.AggregateRoot
 import com.domain.subscribe.event.SubscribeEvent
 import com.domain.subscribe.vo.SubscribeOptions
+import java.time.Instant
 
-class Subscribe private constructor(
+class Subscribe(
     override val id: Long = 0,
     val memberId: Long,
     val options: SubscribeOptions,
-    val createdAt: Long = 0,
+    val createdAt: Instant = Instant.now(),
 ) : AggregateRoot<SubscribeEvent, Long>() {
 
     fun update(

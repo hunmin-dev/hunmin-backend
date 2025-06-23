@@ -62,8 +62,3 @@ class AuthService(
         return tokenProvider.create(auth.id, auth.role)
     }
 }
-
-class EventHi(
-    val name: String,
-) {
-}

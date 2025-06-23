@@ -15,7 +15,6 @@ class SubscribePersistenceMapper {
             receiveTodayIssueNotifications = domain.options.receiveTodayIssueNotifications,
             receiveCommentNotifications = domain.options.receiveCommentNotifications,
             receiveReplyNotifications = domain.options.receiveReplyNotifications,
-            createdAt = domain.createdAt,
         )
 
     fun toDomain(entity: SubscribeEntity) =
@@ -28,6 +27,6 @@ class SubscribePersistenceMapper {
                 receiveCommentNotifications = entity.receiveCommentNotifications,
                 receiveReplyNotifications = entity.receiveReplyNotifications,
             ),
-            createdAt = entity.createdAt,
+            createdAt = entity.createdAt
         )
 }
