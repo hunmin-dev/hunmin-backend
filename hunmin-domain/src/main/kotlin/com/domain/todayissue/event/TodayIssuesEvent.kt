@@ -8,6 +8,8 @@ import java.time.LocalDateTime
 sealed class TodayIssuesEvent : DomainEvent {
 
     companion object {
+
+        // TODO : 영속화 후 받은 id가 넘어가도록 변경 필요
         fun created(todayIssues: TodayIssues) {
             todayIssues.addEvent(
                 TodayIssuesPublishedEvent(

@@ -23,7 +23,12 @@ class Auth(
             password: String,
             authPasswordEncryptor: AuthPasswordEncryptor,
             role: Role,
-        ) = Auth(username = username, password = authPasswordEncryptor.encrypt(password), role = role)
+        ) =
+            Auth(
+                username = username,
+                password = authPasswordEncryptor.encrypt(password),
+                role = role
+            )
 
         fun anonymousAuth() =
             Auth(
